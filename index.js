@@ -17,9 +17,7 @@ let db;
 let messagesCollection;
 
 async function main() {
-    const client = new MongoClient(url, {
-        useNewUrlParser: true, useUnifiedTopology: true
-    });
+    const client = new MongoClient(url);
 
     try {
         await client.connect();
