@@ -8,6 +8,7 @@ import { availableParallelism } from 'node:os';
 import cluster from 'node:cluster';
 import { createAdapter, setupPrimary } from '@socket.io/cluster-adapter';
 import dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config();
 
@@ -56,6 +57,12 @@ function startServer() {
         });
 
         const __dirname = dirname(fileURLToPath(import.meta.url));
+
+        app.use(express.static(path.join(__dirname, '../client/dist')));
+
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+        })
 
         app.get('/', (req, res) => {
             res.sendFile(join(__dirname, 'index.html'));

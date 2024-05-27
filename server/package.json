@@ -1,0 +1,24 @@
+{
+  "name": "chat-app-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "@socket.io/cluster-adapter": "^0.2.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "mongodb": "^6.6.2",
+    "socket.io": "^4.7.5"
+  }
+}
