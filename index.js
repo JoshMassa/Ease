@@ -7,14 +7,19 @@ import { MongoClient, ObjectId } from 'mongodb';
 import { availableParallelism } from 'node:os';
 import cluster from 'node:cluster';
 import { createAdapter, setupPrimary } from '@socket.io/cluster-adapter';
+import dotenv from 'dotenv';
 
-const url = 'mongodb://localhost:27017';
+dotenv.config();
+
+const url = process.env.MONGODB_URI;
 const dbName = 'chatApp';
 let db;
 let messagesCollection;
 
 async function main() {
-    const client = new MongoClient(url);
+    const client = new MongoClient(url, {
+        useNewUrlParser: true, useUnifiedTopology: true
+    });
 
     try {
         await client.connect();
