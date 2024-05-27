@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 import { join } from 'path';
 
 export default defineConfig({
@@ -13,7 +13,8 @@ export default defineConfig({
       },
       '/socket.io': {
         target: 'http://localhost:3000',
-        ws: true
+        ws: true,  // Enable WebSocket proxying
+        changeOrigin: true // Ensure the origin is changed to the target URL
       }
     }
   },
