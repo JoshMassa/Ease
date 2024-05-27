@@ -1,52 +1,34 @@
 import express from 'express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
 import { createServer } from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { Server } from 'socket.io';
-import { MongoClient, ObjectId } from 'mongodb';
 import { availableParallelism } from 'node:os';
 import cluster from 'node:cluster';
 import { createAdapter, setupPrimary } from '@socket.io/cluster-adapter';
 import dotenv from 'dotenv';
 import path from 'path';
+import { connectToDatabase } from './config/connection.js';
+import { typeDefs, resolvers } from './schemas/index.js';
+import Message from './models/Message.js';
 
 dotenv.config();
 
-const url = process.env.MONGODB_URI;
-const dbName = 'chatApp';
-let db;
-let messagesCollection;
-
 async function main() {
-    const client = new MongoClient(url);
-
-    try {
-        await client.connect();
-        console.log('Connected successfully to MongoDB server');
-
-        db = client.db(dbName);
-        messagesCollection = db.collection('messages');
-
-        await messagesCollection.createIndex({ client_offset: 1 }, { unique: true });
-
-        startServer();
-    } catch (error) {
-        console.error('Failed to connect to MongoDB', error);
-        process.exit(1); // Exit the process with an error code
-    }
+    await connectToDatabase();
+    startServer();
 }
 
-function startServer() {
+async function startServer() {
     if (cluster.isPrimary) {
         const numCPUs = availableParallelism();
-        // create one worker per available core
         for (let i = 0; i < numCPUs; i++) {
             cluster.fork({
                 PORT: 3000 + i
             });
         }
-
-        // set up the adapter on the primary thread
         setupPrimary();
     } else {
         const app = express();
@@ -62,11 +44,15 @@ function startServer() {
 
         app.get('*', (req, res) => {
             res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-        })
-
-        app.get('/', (req, res) => {
-            res.sendFile(join(__dirname, 'index.html'));
         });
+
+        const apolloServer = new ApolloServer({
+            typeDefs,
+            resolvers,
+        });
+
+        await apolloServer.start();
+        app.use('/graphql', expressMiddleware(apolloServer));
 
         io.on('connection', async (socket) => {
             console.log('a user connected');
@@ -76,36 +62,38 @@ function startServer() {
 
             socket.on('chat message', async (msg, clientOffset, callback) => {
                 console.log('message: ' + msg);
-                let result;
+                let message;
                 try {
-                    result = await messagesCollection.insertOne({ content: msg, client_offset: clientOffset });
-                } catch (e) {
-                    if (e.code === 11000) {
+                    message = new Message({ content: msg, client_offset: clientOffset });
+                    await message.save();
+                } catch (error) {
+                    if (error.code === 11000) {
                         callback();
                     } else {
-                        console.error('Error inserting message', e);
+                        console.error('Error inserting message', error);
                     }
                     return;
                 }
-                io.emit('chat message', msg, result.insertedId);
+                io.emit('chat message', msg, message._id);
                 callback();
             });
 
             if (!socket.recovered) {
                 try {
                     const serverOffset = socket.handshake.auth.serverOffset || '000000000000000000000000';
-                    const messages = await messagesCollection.find({ _id: { $gt: new ObjectId(serverOffset) } }).toArray();
+                    const messages = await Message.find({ _id: { $get: serverOffset } }).exec();
                     messages.forEach((message) => {
                         socket.emit('chat message', message.content, message._id);
                     });
-                } catch (e) {
-                    console.error('Error retrieving messages', e);
+                } catch (error) {
+                    console.error('Error retrieving messages', error);
                 }
             }
         });
 
-        server.listen(process.env.PORT || 3000, () => {
-            console.log(`server running at http://localhost:${process.env.PORT || 3000}`);
+        const PORT = process.env.PORT || 3000;
+        server.listen(PORT, () => {
+            console.log(`server running at http://localhost:${PORT}`);
         });
     }
 }
