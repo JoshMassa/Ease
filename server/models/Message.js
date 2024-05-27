@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const messageSchema = new Schema({
     content: String,
     client_offset: {
-        type: Number,
+        type: String,
         unique: true,
     },
 }, { timestamps: true });

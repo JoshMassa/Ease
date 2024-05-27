@@ -81,7 +81,7 @@ async function startServer() {
             if (!socket.recovered) {
                 try {
                     const serverOffset = socket.handshake.auth.serverOffset || '000000000000000000000000';
-                    const messages = await Message.find({ _id: { $get: serverOffset } }).exec();
+                    const messages = await Message.find({ _id: { $gte: serverOffset } }).exec();
                     messages.forEach((message) => {
                         socket.emit('chat message', message.content, message._id);
                     });
@@ -93,7 +93,7 @@ async function startServer() {
 
         const PORT = process.env.PORT || 3000;
         server.listen(PORT, () => {
-            console.log(`server running at http://localhost:${PORT}`);
+            console.log(`sockets running at http://localhost:${PORT}`);
         });
     }
 }
