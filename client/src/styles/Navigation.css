@@ -1,0 +1,146 @@
+:root {
+    --space-cadet: #222E50;
+    --cerulean: #007991;
+    --nyanza: #d3f6db;
+    --rose-quarts: #aba9c3;
+    --coral-pink: #fe938c;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.site-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.links  {
+  display: flex;
+  align-items: center;
+  color: var(--nyanza);
+  font-size: 1.3rem;
+  text-decoration: none;
+  line-height: 1.6;
+}
+
+.name {
+  padding-left: 20px;
+  color: var(--nyanza);
+  font-size: 1.15rem;
+  text-decoration: none;
+  text-wrap: wrap;
+  max-width: 50px;
+  line-height: 1.25;
+}
+
+.menu-toggle {
+  flex-direction: column;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  margin-right: 20px;
+}
+
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 7px;
+  background-color: var(--nyanza);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-links {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  background: var(--cerulean);
+  width: 100vw;
+}
+
+.nav-links.active {
+  display: flex;
+}
+
+
+.menu-toggle.active .bar:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.menu-toggle.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active .bar:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+.links {
+  color: var(--nyanza);
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  font-size: 1.15rem;
+}
+
+.links:hover,
+#name:hover {
+  color: var(--rose-quarts);
+}
+
+.active-link {
+  color: var(--rose-quarts);
+  font-weight: bold;
+}
+
+.navbar,
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+}
+
+@media (min-width: 1024px) {
+  .menu-toggle {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    padding-right: 30px;
+  }
+
+  .links {
+    padding: 0 15px;
+  }
+
+  .name {
+    max-width: 300px;
+    font-size: 1.7rem;
+    padding-left: 50px;
+  }
+}

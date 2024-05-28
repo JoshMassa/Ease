@@ -13,6 +13,7 @@ import path from 'path';
 import { connectToDatabase } from './config/connection.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 import Message from './models/Message.js';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -34,11 +35,21 @@ async function startServer() {
         const app = express();
         const server = createServer(app);
         const io = new Server(server, {
+            cors: {
+                origin: 'http://localhost:5173',
+                methods: ['GET', 'POST']
+            },
             connectionStateRecovery: {},
             adapter: createAdapter()
         });
 
         const __dirname = dirname(fileURLToPath(import.meta.url));
+
+        app.use(cors({
+            origin: 'http://localhost:5173',
+            methods: ['GET', 'POST'],
+            credentials: true
+        }));
 
         app.use(express.static(path.join(__dirname, '../client/dist')));
 
@@ -93,7 +104,7 @@ async function startServer() {
 
         const PORT = process.env.PORT || 3000;
         server.listen(PORT, () => {
-            console.log(`sockets running at http://localhost:${PORT}`);
+            console.log(`Server and sockets running at http://localhost:${PORT}`);
         });
     }
 }

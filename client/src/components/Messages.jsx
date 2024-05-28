@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSocket } from '../context/SocketContext';
+import '../styles/Messages.css';
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const socket = useSocket();
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (socket) {
@@ -23,6 +25,14 @@ const Messages = () => {
     }
   }, [socket]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const sendMessage = () => {
     if (socket && input) {
       socket.emit('chat message', input, new Date().toISOString(), () => {
@@ -32,20 +42,23 @@ const Messages = () => {
   };
 
   return (
-    <div>
-      <h1>Messages</h1>
-      <ul>
+    <div id='messagesContainer'>
+      <ul id="messages">
         {messages.map((message) => (
           <li key={message.id}>{message.content}</li>
         ))}
+        <div ref={messagesEndRef} />
       </ul>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type a message"
-      />
-      <button onClick={sendMessage}>Send</button>
+      <form id="form" onSubmit={(e) => { e.preventDefault(); sendMessage(); }}>
+        <input
+          id="input"
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type a message"
+        />
+        <button type="submit">Send</button>
+      </form>
     </div>
   );
 };
