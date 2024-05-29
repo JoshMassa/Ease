@@ -1,4 +1,3 @@
-// client/src/components/FormInput.js
 import React from 'react';
 
 const FormInput = ({ type, name, value, onChange, placeholder }) => {

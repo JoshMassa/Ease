@@ -18,8 +18,13 @@ import cors from 'cors';
 dotenv.config();
 
 async function main() {
-    await connectToDatabase();
-    startServer();
+    try {
+        await connectToDatabase();
+        startServer();
+    } catch (error) {
+        console.error('Failed to connect to the database:', error);
+        process.exit(1);
+    }
 }
 
 async function startServer() {
@@ -60,6 +65,10 @@ async function startServer() {
         const apolloServer = new ApolloServer({
             typeDefs,
             resolvers,
+            context: ({ req }) => {
+                const token = req.headers.authorization || '';
+                return { token };
+              },
         });
 
         await apolloServer.start();

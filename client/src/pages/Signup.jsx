@@ -43,32 +43,35 @@ const Signup = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormInput
-        type="text"
-        name="username"
-        value={formData.username}
-        onChange={handleChange}
-        placeholder="Username"
-      />
-      <FormInput
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Email"
-      />
-      <FormInput
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        placeholder="Password"
-      />
-      <button type="submit">Signup</button>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
-    </form>
+    <div>
+      <h2>Signup</h2>
+      <form onSubmit={handleSubmit}>
+        <FormInput
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          placeholder="Username"
+        />
+        <FormInput
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        <FormInput
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Password"
+        />
+        <button type="submit">Signup</button>
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error.message}</p>}
+      </form>
+    </div>
   );
 };
 
