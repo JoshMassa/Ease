@@ -1,6 +1,8 @@
 import Message from "../models/Message.js";
 import User from "../models/User.js";
 // import generateToken from "../utils/generateToken.js";
+import auth from '../utils/auth.js'; // Adjust the path as necessary
+
 
 const resolvers = {
   Query: {
@@ -44,7 +46,7 @@ const resolvers = {
         password,
       });
       
-      const token = signToken(user);
+      const token = auth.signToken(user);
 
       return {
         _id: user._id,
