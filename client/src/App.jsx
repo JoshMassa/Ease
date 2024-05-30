@@ -3,14 +3,14 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { SocketProvider } from './context/SocketContext';
 import HomePage from './pages/HomePage';
 import Messages from './components/Messages';
-import Header from './components/Header';
+// import Header from './components/Header';
 
 const App = () => {
   console.log('App component rendered');
   return (
     <SocketProvider>
       <Router>
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/messages" element={<Messages />} />
