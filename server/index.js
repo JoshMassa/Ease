@@ -48,14 +48,9 @@ async function startServer() {
         const server = createServer(app);
         const io = new Server(server, {
             cors: {
-                origin: (origin, callback) => {
-                    if (allowedOrigins.includes(origin)) {
-                        callback(null, true);
-                    } else {
-                        callback(new Error('Origin not allowed'));
-                    }
-                },
-                methods: ['GET', 'POST']
+                origin: allowedOrigins,
+                methods: ['GET', 'POST'],
+                credentials: true
             },
             connectionStateRecovery: {},
             adapter: createAdapter()
@@ -90,7 +85,7 @@ async function startServer() {
             context: ({ req }) => {
                 const token = req.headers.authorization || '';
                 return { token };
-              },
+            },
         });
 
         await apolloServer.start();
