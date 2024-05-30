@@ -14,6 +14,7 @@ import { connectToDatabase } from './config/connection.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 import Message from './models/Message.js';
 import cors from 'cors';
+import { authMiddleware } from './utils/auth';
 
 dotenv.config();
 
@@ -72,7 +73,7 @@ async function startServer() {
         });
 
         await apolloServer.start();
-        app.use('/graphql', expressMiddleware(apolloServer));
+        app.use('/graphql', expressMiddleware(apolloServer, { context: authMiddleware }));
 
         io.on('connection', async (socket) => {
             console.log('a user connected');

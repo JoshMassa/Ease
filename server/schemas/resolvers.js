@@ -1,6 +1,6 @@
 import Message from "../models/Message.js";
 import User from "../models/User.js";
-import generateToken from "../utils/generateToken.js";
+// import generateToken from "../utils/generateToken.js";
 
 const resolvers = {
   Query: {
@@ -43,12 +43,14 @@ const resolvers = {
         email,
         password,
       });
+      
+      const token = signToken(user);
 
       return {
         _id: user._id,
         username: user.username,
         email: user.email,
-        token: generateToken(user._id),
+        token,
       };
     },
     login: async (_, { email, password }) => {
@@ -59,7 +61,7 @@ const resolvers = {
           _id: user._id,
           username: user.username,
           email: user.email,
-          token: generateToken(user._id),
+          token,
         };
       } else {
         throw new Error("Invalid email or password");

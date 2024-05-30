@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import FormInput from '../components/FormInput';
+import '../styles/Signup.css';
 
 const SIGNUP_USER = gql`
   mutation signup($username: String!, $email: String!, $password: String!) {
@@ -42,8 +43,8 @@ const Signup = () => {
     }
   };
 
-  return (
-    <div>
+  return (  
+    <div id="signup-container"> 
       <h2>Signup</h2>
       <form onSubmit={handleSubmit}>
         <FormInput
