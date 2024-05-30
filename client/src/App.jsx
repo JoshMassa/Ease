@@ -2,15 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { SocketProvider } from './context/SocketContext';
 import HomePage from './pages/HomePage';
-import Messages from './components/Messages';
-// import Header from './components/Header';
+import Header from './components/Header';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql', // Replace with your GraphQL endpoint
+  uri: 'http://localhost:3000/graphql',
   cache: new InMemoryCache(),
 });
 
@@ -20,10 +19,9 @@ const App = () => {
     <ApolloProvider client={client}>
     <SocketProvider>
       <Router>
-        {/* <Header /> */}
+        <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/messages" element={<Messages />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
         </Routes>
