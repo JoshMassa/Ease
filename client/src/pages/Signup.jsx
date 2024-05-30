@@ -37,6 +37,12 @@ const Signup = () => {
       const { data } = await signup({
         variables: { ...formData },
       });
+      setFormData({
+        username: '',
+        email: '',
+        password: ','
+      });
+      
       console.log(data);
     } catch (err) {
       console.error(err);

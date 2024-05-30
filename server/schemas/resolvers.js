@@ -1,8 +1,7 @@
 import Message from "../models/Message.js";
 import User from "../models/User.js";
-// import generateToken from "../utils/generateToken.js";
 import auth from '../utils/auth.js'; // Adjust the path as necessary
-
+import bcrypt from 'bcryptjs';
 
 const resolvers = {
   Query: {
@@ -59,6 +58,7 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (user && (await bcrypt.compare(password, user.password))) {
+        const token = auth.signToken(user);
         return {
           _id: user._id,
           username: user.username,

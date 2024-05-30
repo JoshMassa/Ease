@@ -36,6 +36,10 @@ const Login = () => {
       const { data } = await login({
         variables: { ...formData },
       });
+      setFormData({
+        email: '',
+        password: '',
+      });
       console.log(data);
     } catch (err) {
       console.error(err);
