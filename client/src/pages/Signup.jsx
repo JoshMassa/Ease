@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import gql from 'graphql-tag';
+import { useNavigate } from "react-router-dom";
 import FormInput from '../components/FormInput';
 import '../styles/Signup.css';
 import { Button } from "antd";
-
-const SIGNUP_USER = gql`
-  mutation signup($username: String!, $email: String!, $password: String!) {
-    signup(username: $username, email: $email, password: $password) {
-      _id
-      username
-      email
-      token
-    }
-  }
-`;
+import { SIGNUP } from '../utils/mutations';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -24,19 +14,20 @@ const Signup = () => {
   });
   const [validationError, setValidationError] = useState('');
   const [apolloError, setApolloError] = useState('');
-  const [signup, { loading, error }] = useMutation(SIGNUP_USER, {
+  const [signup, { loading, error }] = useMutation(SIGNUP, {
     onError: (err) => {
       setApolloError('User already exists.');
     }
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-    setValidationError(''); // Clear validation error on input change
-    setApolloError(''); // Clear Apollo error on input change
+    setValidationError('');
+    setApolloError('');
   };
 
   const handleSubmit = async (e) => {
@@ -63,6 +54,7 @@ const Signup = () => {
       });
 
       console.log(data);
+      navigate('/');
     } catch (err) {
       console.error(err);
     }

@@ -15,6 +15,7 @@ import { typeDefs, resolvers } from './schemas/index.js';
 import Message from './models/Message.js';
 import cors from 'cors';
 import auth from './utils/auth.js';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 dotenv.config();
 
@@ -72,13 +73,7 @@ async function startServer() {
             methods: ['GET', 'POST'],
             credentials: true
         }));
-
-        app.use(express.static(path.join(__dirname, '../client/dist')));
-
-        app.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-        });
-
+        
         const apolloServer = new ApolloServer({
             typeDefs,
             resolvers,
@@ -86,10 +81,18 @@ async function startServer() {
                 const token = req.headers.authorization || '';
                 return { token };
             },
+            plugins: [ApolloServerPluginLandingPageLocalDefault()],
         });
-
+        
         await apolloServer.start();
+        
         app.use('/graphql', expressMiddleware(apolloServer, { context: auth.authMiddleware }));
+
+        app.use(express.static(path.join(__dirname, '../client/dist')));
+
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+        });
 
         io.on('connection', async (socket) => {
             console.log('a user connected');

@@ -1,13 +1,8 @@
 #form {
     background: rgba(0, 0, 0, 0.15);
     border-radius: 8rem;
-    margin: 0.25rem;
+    margin-top: 1rem;
     padding: 0.25rem;
-    position: fixed;
-    top: 75%;
-    bottom: 0;
-    left: 15%;
-    right: 50%;
     display: flex;
     height: 3.5rem;
     box-sizing: border-box;
