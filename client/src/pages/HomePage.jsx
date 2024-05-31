@@ -1,10 +1,8 @@
 import React from 'react';
 import Messages from '../components/Messages';
 import { Breadcrumb, Layout, theme } from 'antd';
-import Navigation from '../components/Navigation';
 
 const { Content } = Layout;
-const { Sider } = Layout;
 
 function HomePage() {
     const {
@@ -13,11 +11,6 @@ function HomePage() {
 
     return (
         <>
-            <Layout style={{ minHeight: '100%' }}>
-                <Sider>
-                    <Navigation />
-                </Sider>
-                <Layout>
             <Breadcrumb
                 style={{
                     margin: '16px 24px',
@@ -38,8 +31,6 @@ function HomePage() {
                     >
                         <Messages />
                     </Content>
-                </Layout>
-            </Layout>
         </>
     );
 }

@@ -1,23 +1,34 @@
 import React from 'react';
-import Navigation from './Navigation';
 import {
-    // LaptopOutlined,
-    // NotificationOutlined,
-    // UserOutlined,
-    // SettingOutlined,
-    // CoffeeOutlined,
-    // AppstoreOutlined,
-    // MailOutlined,
+    HomeOutlined,
+    SignatureOutlined,
     MoonFilled,
+    LoginOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 
 const { Header: AntHeader } = Layout;
 
-const items1 = ['1', '2', '3'].map((key) => ({
-    key,
-    label: `nav ${key}`,
-}));
+const items = [
+    {
+        label: "Home",
+        key: 'homePage',
+        icon: <HomeOutlined/>,
+
+    },
+    {
+        label: "Sign Up",
+        key: "signUp",
+        icon: <SignatureOutlined/>,
+
+    },
+    {
+        label: "Log In",
+        key: 'logIn',
+        icon: <LoginOutlined/>,
+
+    },
+]
 
 function Header() {
     console.log('Header component rendered');
@@ -32,8 +43,8 @@ function Header() {
             <Menu
                 theme="dark"
                 mode="horizontal"
-                defaultSelectedKeys={['1']}
-                items={items1}
+                defaultSelectedKeys={['current']}
+                items={items}
                 style={{
                     flex: 1,
                     minWidth: 0,
