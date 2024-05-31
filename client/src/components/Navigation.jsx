@@ -1,9 +1,5 @@
 import React from 'react';
 import {
-    // AppstoreOutlined,
-    // LaptopOutlined,
-    // NotificationOutlined,
-    // MailOutlined,
     UserOutlined,
     SettingOutlined,
     CoffeeOutlined,
@@ -81,28 +77,24 @@ const items2 = [
         type: 'divider',
     },
     {
-        key: 'sub4',
-        label: 'Donate',
+        key: 'donate',
+        label: 'Donate?',
         icon: <CoffeeOutlined />,
         children: [
             {
-                key: '9',
-                label: 'Donate Here',
+                key: 'donate',
+                label: 'Donate Here!',
             },
         ],
     },
     {
         key: 'grp',
-        label: 'Group',
+        label: 'Extra',
         type: 'group',
         children: [
             {
-                key: '13',
-                label: 'Option 13',
-            },
-            {
-                key: '14',
-                label: 'Option 14',
+                key: 'extra',
+                label: 'Click Me',
             },
         ],
     },
@@ -113,8 +105,8 @@ function Navigation() {
             <>
                 <Menu
                     mode="inline"
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
+                    defaultSelectedKeys={['current']}
+                    defaultOpenKeys={['current']}
                     style={{
                         height: '100%',
                         borderRight: 0,
