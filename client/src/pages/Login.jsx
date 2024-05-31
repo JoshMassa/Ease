@@ -1,20 +1,10 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import gql from "graphql-tag";
+import { useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import "../styles/Login.css";
 import { Button } from "antd";
-
-const LOGIN_USER = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      _id
-      username
-      email
-      token
-    }
-  }
-`;
+import { LOGIN } from "../utils/mutations";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +12,8 @@ const Login = () => {
     password: "",
   });
 
-  const [login, { loading, error }] = useMutation(LOGIN_USER);
+  const [login, { loading, error }] = useMutation(LOGIN);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -42,6 +33,7 @@ const Login = () => {
         password: '',
       });
       console.log(data);
+      navigate('/');
     } catch (err) {
       console.error(err);
     }

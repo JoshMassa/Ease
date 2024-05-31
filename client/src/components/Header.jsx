@@ -4,30 +4,37 @@ import {
     SignatureOutlined,
     MoonFilled,
     LoginOutlined,
+    SettingOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Switch } from 'antd';
+import { Link } from 'react-router-dom';
 
 const { Header: AntHeader } = Layout;
 
 const items = [
     {
-        label: "Home",
+        label: <Link to='/'>Home</Link>,
         key: 'homePage',
         icon: <HomeOutlined/>,
 
     },
     {
-        label: "Sign Up",
+        label: <Link to='/signup'>Sign Up</Link>,
         key: "signUp",
         icon: <SignatureOutlined/>,
 
     },
     {
-        label: "Log In",
+        label: <Link to='/login'>Log In</Link>,
         key: 'logIn',
         icon: <LoginOutlined/>,
 
     },
+    {
+        label: <Link to='/userdashboard'>Dashboard</Link>,
+        key: 'userDashboard',
+        icon: <SettingOutlined/>,
+    }
 ]
 
 function Header() {
