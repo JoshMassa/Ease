@@ -14,12 +14,24 @@ import { connectToDatabase } from './config/connection.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 import Message from './models/Message.js';
 import cors from 'cors';
+import auth from './utils/auth.js';
 
 dotenv.config();
 
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://chat-test-bquw.onrender.com',
+];
+
 async function main() {
-    await connectToDatabase();
-    startServer();
+    try {
+        await connectToDatabase();
+        startServer();
+    } catch (error) {
+        console.error('Failed to connect to the database:', error);
+        process.exit(1);
+    }
 }
 
 async function startServer() {
@@ -36,8 +48,9 @@ async function startServer() {
         const server = createServer(app);
         const io = new Server(server, {
             cors: {
-                origin: 'http://localhost:5173',
-                methods: ['GET', 'POST']
+                origin: allowedOrigins,
+                methods: ['GET', 'POST'],
+                credentials: true
             },
             connectionStateRecovery: {},
             adapter: createAdapter()
@@ -45,8 +58,17 @@ async function startServer() {
 
         const __dirname = dirname(fileURLToPath(import.meta.url));
 
+        app.use(express.urlencoded({ extended: true }));
+        app.use(express.json());
+        
         app.use(cors({
-            origin: 'http://localhost:5173',
+            origin: (origin, callback) => {
+                if (allowedOrigins.includes(origin) || !origin) {
+                    callback(null, true);
+                } else {
+                    callback(new Error('Not allowed by CORS'));
+                }
+            },
             methods: ['GET', 'POST'],
             credentials: true
         }));
@@ -60,10 +82,14 @@ async function startServer() {
         const apolloServer = new ApolloServer({
             typeDefs,
             resolvers,
+            context: ({ req }) => {
+                const token = req.headers.authorization || '';
+                return { token };
+            },
         });
 
         await apolloServer.start();
-        app.use('/graphql', expressMiddleware(apolloServer));
+        app.use('/graphql', expressMiddleware(apolloServer, { context: auth.authMiddleware }));
 
         io.on('connection', async (socket) => {
             console.log('a user connected');
