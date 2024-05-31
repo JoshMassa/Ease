@@ -34,9 +34,14 @@ const resolvers = {
     // User mutations
     signup: async (_, { username, email, password }) => {
       const userExists = await User.findOne({ email });
+      const usernameExists = await User.findOne({ username });
 
       if (userExists) {
         throw new Error("User already exists");
+      }
+
+      if (usernameExists) {
+        throw new Error("Username is already taken");
       }
 
       const user = await User.create({
