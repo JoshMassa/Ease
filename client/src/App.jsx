@@ -7,6 +7,7 @@ import Navigation from './components/Navigation';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import UserDashboard from './pages/UserDashboard';
 import { Layout } from 'antd';
 
 const client = new ApolloClient({
@@ -34,6 +35,7 @@ const App = () => {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/userdashboard" element={<UserDashboard />} />
                   </Routes>
                 </Content>
               </Layout>
