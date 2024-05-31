@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     HomeOutlined,
     SignatureOutlined,
@@ -6,7 +6,7 @@ import {
     LoginOutlined,
     SettingOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Switch } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Header: AntHeader } = Layout;
@@ -39,7 +39,13 @@ const items = [
 
 function Header() {
     console.log('Header component rendered');
+    const [theme, setTheme] = useState('light');
+    const changeTheme = (value) => {
+        setTheme(value ? 'dark' : 'light');
+      };
+
     return (
+
         <AntHeader
             style={{
                 display: 'flex',
@@ -48,7 +54,7 @@ function Header() {
         >
             <div className="demo-logo" />
             <Menu
-                theme="dark"
+                theme={theme}
                 mode="horizontal"
                 defaultSelectedKeys={['current']}
                 items={items}
@@ -57,12 +63,7 @@ function Header() {
                     minWidth: 0,
                 }}
             />
-            <MoonFilled
-                style={{
-                    color: "#ffffff",
-                    fontSize: '25px',
-                }}
-            />
+        <Switch onChange={changeTheme} /> Change Style
         </AntHeader>
     );
 }
