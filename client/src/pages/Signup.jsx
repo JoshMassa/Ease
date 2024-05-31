@@ -26,7 +26,7 @@ const Signup = () => {
   const [apolloError, setApolloError] = useState('');
   const [signup, { loading, error }] = useMutation(SIGNUP_USER, {
     onError: (err) => {
-      setApolloError('Something went wrong.');
+      setApolloError('User already exists.');
     }
   });
 
