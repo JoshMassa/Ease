@@ -3,6 +3,7 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import FormInput from "../components/FormInput";
 import "../styles/Login.css";
+import { Button } from "antd";
 
 const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
@@ -49,7 +50,7 @@ const Login = () => {
   return (
     <div id="login-container">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form id="login-form" onSubmit={handleSubmit}>
         <FormInput
           type="email"
           name="email"
@@ -64,9 +65,15 @@ const Login = () => {
           onChange={handleChange}
           placeholder="Password"
         />
-        <button type="submit">Login</button>
+        <Button type="primary" htmlType="submit" style={{ backgroundColor: '#222E50', borderColor: '#222E50' }}>Login</Button>
         {loading && <p>Loading...</p>}
-        {error && <p>Error: {error.message}</p>}
+        {error && (
+          <p>
+            {!formData.email || !formData.password
+              ? 'You must enter an email and password.'
+              : 'Something went wrong.'}
+          </p>
+        )}
       </form>
     </div>
   );
