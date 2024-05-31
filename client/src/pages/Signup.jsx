@@ -22,18 +22,36 @@ const Signup = () => {
     email: '',
     password: '',
   });
-
-  const [signup, { loading, error }] = useMutation(SIGNUP_USER);
+  const [validationError, setValidationError] = useState('');
+  const [apolloError, setApolloError] = useState('');
+  const [signup, { loading, error }] = useMutation(SIGNUP_USER, {
+    onError: (err) => {
+      setApolloError('Something went wrong.');
+    }
+  });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setValidationError(''); // Clear validation error on input change
+    setApolloError(''); // Clear Apollo error on input change
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.username.length > 0 && formData.username.length < 3) {
+      setValidationError('Username must be at least 3 characters.');
+      return;
+    }
+
+    if (!formData.username || !formData.email || !formData.password) {
+      setValidationError('You must enter a username, email, and password.');
+      return;
+    }
+
     try {
       const { data } = await signup({
         variables: { ...formData },
@@ -41,7 +59,7 @@ const Signup = () => {
       setFormData({
         username: '',
         email: '',
-        password: ','
+        password: '',
       });
 
       console.log(data);
@@ -50,8 +68,8 @@ const Signup = () => {
     }
   };
 
-  return (  
-    <div id="signup-container"> 
+  return (
+    <div id="signup-container">
       <h2>Signup</h2>
       <form id="signup-form" onSubmit={handleSubmit}>
         <FormInput
@@ -77,13 +95,8 @@ const Signup = () => {
         />
         <Button type="primary" htmlType="submit" style={{ backgroundColor: '#222E50', borderColor: '#222E50' }}>Signup</Button>
         {loading && <p>Loading...</p>}
-        {error && (
-          <p>
-            {!formData.username || !formData.email || !formData.password
-              ? 'You must enter a username, email, and password.'
-              : 'Something went wrong.'}
-          </p>
-        )}
+        {validationError && <p>{validationError}</p>}
+        {apolloError && <p>{apolloError}</p>}
       </form>
     </div>
   );
