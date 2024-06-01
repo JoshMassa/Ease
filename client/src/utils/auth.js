@@ -1,27 +1,23 @@
-// use this to decode a token and get the user's information out of it
-import * as jwtDecode from 'jwt-decode';
-const decode = jwtDecode;
+import { jwtDecode } from 'jwt-decode'; // Correct import statement
 
-// create a new class to instantiate for a user
 class AuthService {
-  // get user data
   getProfile() {
     const token = this.getToken();
+    console.log('Token:', token);
     if (!token) return null;
-    return decode(token);
+    const decoded = jwtDecode(token); // Use jwtDecode directly
+    console.log('Decoded token:', decoded);
+    return decoded;
   }
 
-  // check if user's logged in
   loggedIn() {
-    // Checks if there is a saved token and it's still valid
     const token = this.getToken();
-    return !!token && !this.isTokenExpired(token); // handwaiving here
+    return !!token && !this.isTokenExpired(token);
   }
 
-  // check if token is expired
   isTokenExpired(token) {
     try {
-      const decoded = decode(token);
+      const decoded = jwtDecode(token); // Use jwtDecode directly
       return decoded.exp < Date.now() / 1000;
     } catch (err) {
       return false;
@@ -29,21 +25,20 @@ class AuthService {
   }
 
   getToken() {
-    // Retrieves the user token from localStorage
     return localStorage.getItem('id_token');
   }
 
   login(idToken) {
-    // Saves user token to localStorage
+    console.log('Setting token:', idToken);
     localStorage.setItem('id_token', idToken);
     window.location.assign('/');
   }
 
   logout() {
-    // Clear user token and profile data from localStorage
+    console.log('Logging out...');
     localStorage.removeItem('id_token');
-    // this will reload the page and reset the state of the application
-    window.location.assign('/');
+    console.log('Token removed:', !localStorage.getItem('id_token')); // Check if token is removed
+    window.location.assign('/login');
   }
 }
 
