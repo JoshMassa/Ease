@@ -5,6 +5,8 @@ import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 import { Layout } from 'antd';
+import LoggedInIndicator from './components/LoggedInIndicator'; // Add this import
+
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -27,6 +29,7 @@ const App = () => {
             <Layout>
               <Content style={{ minHeight: '91vh' }}>
                 <Outlet />
+                <LoggedInIndicator />
               </Content>
             </Layout>
           </Layout>
