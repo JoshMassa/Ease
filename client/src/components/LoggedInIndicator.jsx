@@ -5,8 +5,9 @@ const LoggedInIndicator = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const updateUser = async () => {
-      const profile = await AuthService.getProfile();
+    const updateUser = () => {
+      const profile = AuthService.getProfile();
+      console.log('Profile:', profile);
       setUser(profile);
     };
 
@@ -23,7 +24,16 @@ const LoggedInIndicator = () => {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', top: 10, right: 10, padding: '5px 10px', background: user ? 'green' : 'red', color: 'white', borderRadius: '5px' }}>
+    <div style={{
+      position: 'fixed',
+      bottom: 10, // Position from the bottom
+      right: 10,  // Position from the right
+      padding: '5px 10px',
+      background: user ? 'green' : 'red',
+      color: 'white',
+      borderRadius: '5px',
+      zIndex: 1000, // Ensure it stays above other elements
+    }}>
       {user ? `Logged in as ${user.username || 'Unknown User'}` : 'Not Logged In'}
     </div>
   );
