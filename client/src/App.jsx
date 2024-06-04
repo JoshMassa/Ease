@@ -29,10 +29,10 @@ const App = () => {
   }
   const DarkTheme =
   {
-    colorBgContainer: '#414172', 
-    colorTextBase: '#aeaeae',
-    "bodyBg": "rgb(0, 21, 41)",
-    "headerBg": "rgb(65, 65, 114)"
+    colorBgContainer: '#15325b', 
+    colorTextBase: '#ffffff',
+    "bodyBg": "#111a2c",
+    "headerBg": "#15325b"
   }
 
   console.log('App component rendered');
