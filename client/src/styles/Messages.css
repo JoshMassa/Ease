@@ -1,5 +1,5 @@
 #form {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.06);
     border-radius: 8rem;
     margin-top: 1rem;
     padding: 0.25rem;
@@ -22,7 +22,7 @@
 }
 
 #form > button {
-    background: #333;
+    background: #1668dc;
     border: none;
     padding: 0 1rem;
     margin: 0.25rem;
@@ -41,10 +41,12 @@
 
 #messages > li {
     padding: 0.5rem 1rem;
+    border-radius: 1rem;
 }
 
 #messages > li:nth-child(odd) {
-    background: #efefef;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 1rem;
 }
 
 #messagesContainer {

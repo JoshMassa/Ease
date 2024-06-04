@@ -6,7 +6,7 @@ import {
   SettingOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Switch } from 'antd';
+import { Layout, Menu } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthService from '../utils/auth';
 
@@ -14,17 +14,12 @@ const { Header: AntHeader } = Layout;
 
 function Header() {
   console.log('Header component rendered');
-  const [theme, setTheme] = useState('light');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoggedIn(AuthService.loggedIn());
   }, []);
-
-  const changeTheme = (value) => {
-    setTheme(value ? 'dark' : 'light');
-  };
 
   const handleLogout = () => {
     AuthService.logout();
@@ -70,7 +65,6 @@ function Header() {
     >
       <div className="demo-logo" />
       <Menu
-        theme={theme}
         mode="horizontal"
         defaultSelectedKeys={['current']}
         items={items}
@@ -79,7 +73,6 @@ function Header() {
           minWidth: 0,
         }}
       />
-      <Switch onChange={changeTheme} /> Change Style
     </AntHeader>
   );
 }

@@ -51,26 +51,12 @@ const items2 = [
         children: [
             {
                 key: '5',
-                label: 'Option 5',
+                label: 'My Profile',
             },
             {
                 key: '6',
-                label: 'Option 6',
+                label: 'Extra Settings',
             },
-            // {
-            //   key: 'sub3',
-            //   label: 'Submenu',
-            //   children: [
-            //     {
-            //       key: '7',
-            //       label: 'Option 7',
-            //     },
-            //     {
-            //       key: '8',
-            //       label: 'Option 8',
-            //     },
-            //   ],
-            // },
         ],
     },
     {
@@ -82,19 +68,19 @@ const items2 = [
         icon: <CoffeeOutlined />,
         children: [
             {
-                key: 'donate',
+                key: 'donate1',
                 label: 'Donate Here!',
             },
         ],
     },
     {
         key: 'grp',
-        label: 'Extra',
+        label: 'More',
         type: 'group',
         children: [
             {
-                key: 'extra',
-                label: 'Click Me',
+                key: 'extra1',
+                label: 'Community Guidelines',
             },
         ],
     },

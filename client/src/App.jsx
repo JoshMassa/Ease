@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { SocketProvider } from './context/SocketContext';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
-import { Layout } from 'antd';
+import { Layout, Switch, ConfigProvider, theme } from 'antd';
 import LoggedInIndicator from './components/LoggedInIndicator'; // Add this import
 
 
@@ -16,24 +16,76 @@ const client = new ApolloClient({
 const { Sider, Content } = Layout;
 
 const App = () => {
+  const [currentTheme, setCurrentTheme] = useState('light');
+  const changeTheme = (value) => {
+    setCurrentTheme(value ? 'dark' : 'light');
+  };
+  const LightTheme = 
+  {
+    colorBgContainer: '#ffffff', 
+    colorTextBase: '#4b4b4b',
+    "headerBg": "#ffffff",
+    "bodyBg": '#f5f5f5',
+    "itemSelectedColor": "#3c89e8",
+    "itemSelectedBg": "#E6F4FF",
+    "horizontalItemSelectedColor": '#3c89e8',
+    "itemHoverColor": "#3c89e8"
+  }
+  const DarkTheme =
+  {
+    colorBgContainer: '#15325b', 
+    colorTextBase: '#ffffff',
+    "bodyBg": "#111a2c",
+    "headerBg": "#15325b",
+    "itemSelectedColor": "#ffffff",
+    "itemSelectedBg": "rgba(0, 0, 0, 0.06)",
+    "itemHoverBg": "rgba(0, 0, 0, 0.06)",
+    "horizontalItemSelectedColor": '#65a9f3',
+    "colorPrimary": "#1668dc"
+  }
+
   console.log('App component rendered');
   return (
     <ApolloProvider client={client}>
       <SocketProvider>
-        <Layout style={{ minHeight: '100vh'}}>
-          <Header />
+        <ConfigProvider
+        theme={{
+      token: 
+        currentTheme === 'light'? LightTheme : DarkTheme,
+      components:{
+        "Layout":
+          currentTheme ==='light'? LightTheme : DarkTheme,  
+         "Menu": 
+          currentTheme ==='light'? LightTheme : DarkTheme,
+          "Switch":
+          currentTheme ==='light'? LightTheme : DarkTheme,
+      }
+    }}>
+        <Layout 
+
+        style={{ minHeight: '100vh'}}>
+          <Header/>
           <Layout>
             <Sider>
-              <Navigation />
+              <Navigation/>
             </Sider>
             <Layout>
-              <Content style={{ minHeight: '91vh' }}>
+              <Content
+
+              style={{ minHeight: '91vh' }}>
+                <Switch 
+                checked = {currentTheme === 'dark'}
+                checkedChildren = "Dark"
+                unCheckedChildren = "Light"
+                onChange= {changeTheme}
+                />
                 <Outlet />
                 <LoggedInIndicator />
               </Content>
             </Layout>
           </Layout>
         </Layout>
+        </ConfigProvider>
       </SocketProvider>
     </ApolloProvider>
   );
