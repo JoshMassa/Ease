@@ -16,14 +16,17 @@
     "@apollo/server": "^4.10.4",
     "@socket.io/cluster-adapter": "^0.2.2",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "formidable": "^3.5.1",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.2",
     "mongoose": "^8.4.0",
+    "multer": "^1.4.5-lts.1",
     "socket.io": "^4.7.5"
   }
 }

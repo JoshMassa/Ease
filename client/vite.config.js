@@ -11,6 +11,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
+      '/sign-upload': {
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      },
       '/socket.io': {
         target: 'http://localhost:3000',
         ws: true,  // Enable WebSocket proxying
