@@ -19,7 +19,7 @@ function UserDashboard() {
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://widget.cloudinary.com/v2.0/global/all.js';
+    script.src = 'https://upload-widget.cloudinary.com/latest/global/all.js';
     script.async = true;
     script.onload = () => {
       console.log('Cloudinary script loaded');
@@ -31,26 +31,30 @@ function UserDashboard() {
   }, []);
 
   const handleImageUpload = () => {
-    const myWidget = window.cloudinary.createUploadWidget(
-      {
-        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-        uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
-        sources: ['local', 'url', 'camera', 'dropbox'],
-        multiple: false,
-        defaultSource: 'local',
-        resourceType: 'image',
-      },
-      (error, result) => {
-        if (!error && result && result.event === "success") {
-          console.log('Uploaded image info:', result.info);
-          setProfilePicture(result.info.secure_url);
-        } else if (error) {
-          console.error('Error during upload:', error);
+    if (window.cloudinary && window.cloudinary.createUploadWidget) {
+        const myWidget = window.cloudinary.createUploadWidget(
+          {
+            cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+            uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+            sources: ['local', 'url', 'camera', 'dropbox'],
+            multiple: false,
+            defaultSource: 'local',
+            resourceType: 'image',
+          },
+          (error, result) => {
+            if (!error && result && result.event === "success") {
+              console.log('Uploaded image info:', result.info);
+              setProfilePicture(result.info.secure_url);
+            } else if (error) {
+              console.error('Error during upload:', error);
+            }
         }
-      }
     );
 
     myWidget.open();
+    } else {
+        console.error('Cloudinary widget not loaded');
+    }
   };
 
   return (
