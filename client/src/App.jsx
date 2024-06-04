@@ -6,8 +6,7 @@ import Header from './components/Header';
 import Navigation from './components/Navigation';
 import { Layout, Switch, ConfigProvider, theme } from 'antd';
 import LoggedInIndicator from './components/LoggedInIndicator'; // Add this import
-// import { ThemeProvider } from './context/ThemeContext';
-// import ThemeSwitcher from './components/ThemeSwitcher';
+
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -25,7 +24,8 @@ const App = () => {
   {
     colorBgContainer: '#ffffff', 
     colorTextBase: '#4b4b4b',
-    "headerBg": "rgb(255, 255, 255)"
+    "headerBg": "rgb(255, 255, 255)",
+    "bodyBg": '#f5f5f5'
   }
   const DarkTheme =
   {

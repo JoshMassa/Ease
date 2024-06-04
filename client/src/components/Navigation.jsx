@@ -57,20 +57,6 @@ const items2 = [
                 key: '6',
                 label: 'Option 6',
             },
-            // {
-            //   key: 'sub3',
-            //   label: 'Submenu',
-            //   children: [
-            //     {
-            //       key: '7',
-            //       label: 'Option 7',
-            //     },
-            //     {
-            //       key: '8',
-            //       label: 'Option 8',
-            //     },
-            //   ],
-            // },
         ],
     },
     {
@@ -82,7 +68,7 @@ const items2 = [
         icon: <CoffeeOutlined />,
         children: [
             {
-                key: 'donate',
+                key: 'donate1',
                 label: 'Donate Here!',
             },
         ],
@@ -93,7 +79,7 @@ const items2 = [
         type: 'group',
         children: [
             {
-                key: 'extra',
+                key: 'extra1',
                 label: 'Click Me',
             },
         ],
