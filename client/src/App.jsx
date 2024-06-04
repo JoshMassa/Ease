@@ -40,7 +40,8 @@ const App = () => {
     "itemSelectedColor": "#ffffff",
     "itemSelectedBg": "rgba(0, 0, 0, 0.06)",
     "itemHoverBg": "rgba(0, 0, 0, 0.06)",
-    "horizontalItemSelectedColor": '#65a9f3'
+    "horizontalItemSelectedColor": '#65a9f3',
+    "colorPrimary": "#1668dc"
   }
 
   console.log('App component rendered');
@@ -55,7 +56,9 @@ const App = () => {
         "Layout":
           currentTheme ==='light'? LightTheme : DarkTheme,  
          "Menu": 
-          currentTheme ==='light'? LightTheme : DarkTheme,    
+          currentTheme ==='light'? LightTheme : DarkTheme,
+          "Switch":
+          currentTheme ==='light'? LightTheme : DarkTheme,
       }
     }}>
         <Layout 
