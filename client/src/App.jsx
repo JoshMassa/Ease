@@ -24,15 +24,23 @@ const App = () => {
   {
     colorBgContainer: '#ffffff', 
     colorTextBase: '#4b4b4b',
-    "headerBg": "rgb(255, 255, 255)",
-    "bodyBg": '#f5f5f5'
+    "headerBg": "#ffffff",
+    "bodyBg": '#f5f5f5',
+    "itemSelectedColor": "#3c89e8",
+    "itemSelectedBg": "#E6F4FF",
+    "horizontalItemSelectedColor": '#3c89e8',
+    "itemHoverColor": "#3c89e8"
   }
   const DarkTheme =
   {
     colorBgContainer: '#15325b', 
     colorTextBase: '#ffffff',
     "bodyBg": "#111a2c",
-    "headerBg": "#15325b"
+    "headerBg": "#15325b",
+    "itemSelectedColor": "#ffffff",
+    "itemSelectedBg": "rgba(0, 0, 0, 0.06)",
+    "itemHoverBg": "rgba(0, 0, 0, 0.06)",
+    "horizontalItemSelectedColor": '#65a9f3'
   }
 
   console.log('App component rendered');
@@ -45,7 +53,9 @@ const App = () => {
         currentTheme === 'light'? LightTheme : DarkTheme,
       components:{
         "Layout":
-          currentTheme ==='light'? LightTheme : DarkTheme,        
+          currentTheme ==='light'? LightTheme : DarkTheme,  
+         "Menu": 
+          currentTheme ==='light'? LightTheme : DarkTheme,    
       }
     }}>
         <Layout 

@@ -51,11 +51,11 @@ const items2 = [
         children: [
             {
                 key: '5',
-                label: 'Option 5',
+                label: 'My Profile',
             },
             {
                 key: '6',
-                label: 'Option 6',
+                label: 'Extra Settings',
             },
         ],
     },
@@ -75,12 +75,12 @@ const items2 = [
     },
     {
         key: 'grp',
-        label: 'Extra',
+        label: 'More',
         type: 'group',
         children: [
             {
                 key: 'extra1',
-                label: 'Click Me',
+                label: 'Community Guidelines',
             },
         ],
     },
