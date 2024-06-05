@@ -1,12 +1,10 @@
-import { jwtDecode } from 'jwt-decode'; // Correct import statement
+import { jwtDecode } from 'jwt-decode';
 
 class AuthService {
   getProfile() {
     const token = this.getToken();
-    console.log('Token:', token);
     if (!token) return null;
     const decoded = jwtDecode(token); // Use jwtDecode directly
-    console.log('Decoded token:', decoded);
     return decoded;
   }
 
@@ -29,9 +27,7 @@ class AuthService {
   }
 
   login(idToken) {
-    console.log('Setting token:', idToken);
     localStorage.setItem('id_token', idToken);
-    window.location.assign('/');
   }
 
   logout() {

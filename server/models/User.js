@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -15,6 +15,45 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
+  firstName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  state: {
+    type: String,
+  },
+  country: {
+    type: String,
+  },
+  aboutMe: {
+    type: String,
+  },
+  profilePicture: {
+    type: String,
+  },
+  university: {
+    type: String,
+  },
+  major: {
+    type: String,
+  },
+  title: {
+    type: String,
+  },
+  company: {
+    type: String,
   },
 });
 
@@ -31,6 +70,12 @@ userSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
+userSchema
+  .virtual('friendCount')
+  .get(function () {
+    return this.friends.length;
+  });
+
+const User = model('User', userSchema);
 
 export default User;

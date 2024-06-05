@@ -33,3 +33,52 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const ADD_FRIEND = gql`
+  mutation AddFriend($userId: ID!, $friendId: ID!) {
+    addFriend(userId: $userId, friendId: $friendId) {
+      _id
+      username
+      email
+      friends {
+        _id
+        username
+      }
+    }
+  }
+`;
+
+export const REMOVE_FRIEND = gql`
+  mutation RemoveFriend($userId: ID!, $friendId: ID!) {
+    removeFriend(userId: $userId, friendId: $friendId) {
+      _id
+      username
+      email
+      friend {
+        _id
+        username
+      }
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($id: ID!, $input: UserUpdateInput!) {
+    updateUser(id: $id, input: $input) {
+      _id
+      username
+      email
+      firstName
+      lastName
+      city
+      state
+      country
+      aboutMe
+      profilePicture
+      university
+      major
+      title
+      company
+    }
+  }
+`;
