@@ -22,9 +22,13 @@ const resolvers = {
     },
   },
   Mutation: {
-    addMessage: async (_, { content, client_offset }) => {
+    addMessage: async (_, { content, client_offset }, { token }) => {
       try {
-        const message = new Message({ content, client_offset });
+        const { _id } = auth.getProfile(token); // Get user ID from token
+        const user = await User.findById(_id); // Find user by ID
+        if (!user) throw new Error('User not found');
+
+        const message = new Message({ content, client_offset, user: _id });
         await message.save();
         return message;
       } catch (error) {

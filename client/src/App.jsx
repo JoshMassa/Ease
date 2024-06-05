@@ -5,7 +5,8 @@ import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 import { Layout, Switch, ConfigProvider, theme } from 'antd';
-import LoggedInIndicator from './components/LoggedInIndicator'; // Add this import
+import LoggedInIndicator from './components/LoggedInIndicator';
+import { CurrentUserProvider } from './context/CurrentUserContext';
 
 
 const client = new ApolloClient({
@@ -48,6 +49,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <SocketProvider>
+        <CurrentUserProvider>
         <ConfigProvider
         theme={{
       token: 
@@ -86,6 +88,7 @@ const App = () => {
           </Layout>
         </Layout>
         </ConfigProvider>
+        </CurrentUserProvider>
       </SocketProvider>
     </ApolloProvider>
   );

@@ -7,6 +7,7 @@ const messageSchema = new Schema({
         type: String,
         unique: true,
     },
+    user: { type: Schema.Types.ObjectId, ref: 'User' }, // Add reference to User model
 }, { timestamps: true });
 
 const Message = mongoose.model('Message', messageSchema);

@@ -154,31 +154,36 @@ async function startServer() {
             socket.on('disconnect', () => {
                 console.log('user disconnected');
             });
-
-            socket.on('chat message', async (msg, clientOffset, callback) => {
-                console.log('message: ' + msg);
-                let message;
+        
+            socket.on('chat message', async (message, callback) => {
+                console.log('message: ', message);
+                let newMessage;
                 try {
-                    message = new Message({ content: msg, client_offset: clientOffset });
-                    await message.save();
+                    newMessage = new Message({
+                        content: message.content,
+                        client_offset: message.client_offset,
+                        user: message.user._id
+                    });
+                    await newMessage.save();
+                    // Emit the message only once
+                    io.emit('chat message', { content: message.content, user: { username: message.user.username }, messageId: newMessage._id });
+                    callback();
                 } catch (error) {
+                    console.error('Error inserting message', error);
                     if (error.code === 11000) {
                         callback();
                     } else {
                         console.error('Error inserting message', error);
                     }
-                    return;
                 }
-                io.emit('chat message', msg, message._id);
-                callback();
             });
-
+        
             if (!socket.recovered) {
                 try {
                     const serverOffset = socket.handshake.auth.serverOffset || '000000000000000000000000';
-                    const messages = await Message.find({ _id: { $gte: serverOffset } }).exec();
+                    const messages = await Message.find({ _id: { $gte: serverOffset } }).populate('user').exec();
                     messages.forEach((message) => {
-                        socket.emit('chat message', message.content, message._id);
+                        socket.emit('chat message', { content: message.content, user: message.user, messageId: message._id });
                     });
                 } catch (error) {
                     console.error('Error retrieving messages', error);
