@@ -18,6 +18,22 @@ export const GET_USERS = gql`
       _id
       username
       email
+      token
+      friends {
+        _id
+        username
+      }
+      firstName
+      lastName
+      city
+      state
+      country
+      aboutMe
+      profilePicture
+      university
+      major
+      title
+      company
     }
   }
 `;
@@ -28,6 +44,48 @@ export const GET_USER = gql`
       _id
       username
       email
+      token
+      friends {
+        _id
+        username
+      }
+      firstName
+      lastName
+      city
+      state
+      country
+      aboutMe
+      profilePicture
+      university
+      major
+      title
+      company
     }
   }
+`;
+
+export const GET_CURRENT_USER = gql`
+query GetCurrentUser {
+  currentUser {
+    _id
+    username
+    email
+    token
+    friends {
+      _id
+      username
+    }
+    firstName
+    lastName
+    city
+    state
+    country
+    aboutMe
+    profilePicture
+    university
+    major
+    title
+    company
+  }
+}
 `;

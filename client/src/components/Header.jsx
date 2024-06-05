@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   HomeOutlined,
   SignatureOutlined,
@@ -9,12 +9,14 @@ import {
 import { Layout, Menu } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthService from '../utils/auth';
+import AuthContext from '../context/AuthContext';
 
 const { Header: AntHeader } = Layout;
 
 function Header() {
   console.log('Header component rendered');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +27,7 @@ function Header() {
     AuthService.logout();
     console.log('Logout clicked'); // Add log to verify click
     setIsLoggedIn(false);
+    navigate('/login');
   };
 
   const items = [
@@ -44,7 +47,7 @@ function Header() {
       icon: <LoginOutlined />,
     },
     isLoggedIn && {
-      label: <Link to='/userdashboard'>Dashboard</Link>,
+      label: <Link to={`/user/${user ? user.username : ':username'}`}>Dashboard</Link>,
       key: 'userDashboard',
       icon: <SettingOutlined />,
     },
