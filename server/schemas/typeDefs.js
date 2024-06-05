@@ -7,13 +7,14 @@ const typeDefs = gql`
     client_offset: Int!
     createdAt: String
     updatedAt: String
+    user: User!
   }
 
   type User {
     _id: ID!
     username: String!
     email: String!
-    token: String!
+    token: String
   }
 
   type Query {
