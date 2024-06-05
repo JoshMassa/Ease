@@ -80,6 +80,9 @@ const App = () => {
                 checkedChildren = "Dark"
                 unCheckedChildren = "Light"
                 onChange= {changeTheme}
+                style={{
+                  margin: '10px'
+                }}
                 />
                 <Outlet />
                 <LoggedInIndicator />
