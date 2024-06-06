@@ -1,4 +1,4 @@
-#login-container {
+/* #login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,6 +36,9 @@
   margin-top: 10px;
   color: #ff0000;
   text-align: center;
+} */
+.centered{
+  text-align: 'center';
 }
 
 /* Media query for mobile devices */

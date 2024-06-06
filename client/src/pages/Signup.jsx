@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Form, Input, Typography, ConfigProvider, Row, Col, Spin } from 'antd';
+import { Button, Checkbox, Form, Input, Typography, ConfigProvider, Row, Col } from 'antd';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 // import FormInput from '../components/FormInput';
@@ -177,13 +177,13 @@ const Signup = () => {
 
       {validationError && (
     <Form.Item>
-    <Text type= "danger">{validationError}</Text>
+    <Text className= "centered" type= "danger">{validationError}</Text>
     </Form.Item>
     )}
 
       {validationError && (
     <Form.Item>
-    <Text type= "danger">{apolloError}</Text>
+    <Text className= "centered" type= "danger">{apolloError}</Text>
     </Form.Item>
     )}
     </Form>
