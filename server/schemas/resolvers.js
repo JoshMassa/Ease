@@ -2,6 +2,7 @@ import Message from "../models/Message.js";
 import User from "../models/User.js";
 import auth from '../utils/auth.js';
 import bcrypt from 'bcryptjs';
+import { AuthenticationError } from 'apollo-server-express';
 
 const resolvers = {
   Query: {
@@ -31,6 +32,7 @@ const resolvers = {
         major: user.major,
         title: user.title,
         company: user.company,
+        status: user.status,
       };
     },
     // fetch all users
@@ -52,7 +54,15 @@ const resolvers = {
         major: user.major,
         title: user.title,
         company: user.company,
+        status: user.status,
       }));
+    },
+    usersByStatus: async (_, { status }) => {
+      try {
+        return await User.find({ status });
+      } catch (error) {
+        throw new Error('Error fetching users by status');
+      }
     },
   },
   Mutation: {
@@ -162,17 +172,36 @@ const resolvers = {
     login: async (_, { email, password }) => {
       const user = await User.findOne({ email });
 
-      if (user && (await bcrypt.compare(password, user.password))) {
-        const token = auth.signToken(user);
-        return {
-          _id: user._id,
-          username: user.username,
-          email: user.email,
-          token,
-        };
-      } else {
-        throw new Error("Invalid email or password");
+      if (!user) {
+        throw new AuthenticationError('Incorrect email or password');
       }
+
+      const correctPw = await bcrypt.compare(password, user.password);
+
+      if (!correctPw) {
+        throw new AuthenticationError('Incorrect email or password');
+      }
+
+      const token = auth.signToken(user);
+
+      user.status = 'Online';
+      await user.save();
+      console.log('User status updated to Online for user:', user.username);
+
+      return {
+        token,
+        user,
+      };
+    },
+    updateUserStatus: async (_, { status }, context) => {
+      if (context.user) {
+        return await User.findByIdAndUpdate(
+          context.user._id,
+          { status },
+          { new: true }
+        );
+      }
+      throw new AuthenticationError('Not logged in');
     },
     updateUser: async (_, { id, input }) => {
       try {
@@ -182,6 +211,16 @@ const resolvers = {
         throw new Error('Error updating user');
       }
     },
+    logout: async (_, __, context) => {
+      if (context.user) {
+        return await User.findByIdAndUpdate(
+          context.user._id,
+          { status: 'Offline' },
+          { new: true }
+        );
+      }
+      throw new AuthenticationError('Not logged in');
+    }
   },
 };
 

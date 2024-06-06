@@ -14,6 +14,7 @@ import fs from 'fs';
 import { connectToDatabase } from './config/connection.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 import Message from './models/Message.js';
+import User from './models/User.js';
 import cors from 'cors';
 import auth from './utils/auth.js';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
@@ -60,7 +61,7 @@ async function startServer() {
         const io = new Server(server, {
             cors: {
                 origin: allowedOrigins,
-                methods: ['GET', 'POST'],
+                methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
                 credentials: true
             },
             connectionStateRecovery: {},
@@ -85,7 +86,7 @@ async function startServer() {
                     callback(new Error('Not allowed by CORS'));
                 }
             },
-            methods: ['GET', 'POST'],
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             credentials: true
         }));
 
@@ -128,6 +129,7 @@ async function startServer() {
                 });
             });
         });
+        
         
         const apolloServer = new ApolloServer({
             typeDefs,
@@ -195,6 +197,15 @@ async function startServer() {
         server.listen(PORT, () => {
             console.log(`Server and sockets running at http://localhost:${PORT}`);
         });
+
+        const updateUserStatusToOffline = async () => {
+            try {
+                await User.updateMany({ status: 'Online' }, { $set: { status: 'Offline' } });
+            } catch (error) {
+                console.error('Error updating user status to offline:', error);
+            }
+        };
+        setInterval(updateUserStatusToOffline, 900000);
     }
 }
 

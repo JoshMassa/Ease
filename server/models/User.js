@@ -55,6 +55,11 @@ const userSchema = new Schema({
   company: {
     type: String,
   },
+  status: {
+    type: String,
+    enum: ['Online', 'Offline'],
+    default: 'Offline',
+  }
 });
 
 userSchema.pre('save', async function(next) {

@@ -1,24 +1,30 @@
 import React, { useContext, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from 'react-router-dom';
-// import FormInput from "../components/FormInput";
 import "../styles/Login.css";
 import { Form, Input, Button, Typography, Row, Col, ConfigProvider } from "antd";
 import AuthService from "../utils/auth";
-import { LOGIN } from "../utils/mutations";
+import { LOGIN, UPDATE_USER_STATUS } from "../utils/mutations";
 import AuthContext from "../context/AuthContext";
 
 const { Title } = Typography;
 
 const Login = () => {
-  const { setUser } = useContext(AuthContext);
+  const { setUser, setIsLoggedIn } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const navigate = useNavigate();
-  const [login, { loading, error }] = useMutation(LOGIN);
+  const [login, { loading: loginLoading, error: loginError }] = useMutation(LOGIN);
+  const [updateUserStatus] = useMutation(UPDATE_USER_STATUS, {
+    context: {
+      headers: {
+        authorization: `Bearer ${AuthService.getToken()}`,
+      },
+    },
+  });
 
   const handleChange = (e) => {
     setFormData({
@@ -32,12 +38,23 @@ const Login = () => {
       const { data } = await login({
         variables: { ...values },
       });
-      console.log('Login data:', data); // Log the response to ensure it includes the token
-      AuthService.login(data.login.token); // Save the token using AuthService
+      console.log('Login data:', data);
+      AuthService.login(data.login.token);
 
       const decoded = AuthService.getProfile();
       console.log('Decoded token:', decoded);
       setUser(decoded);
+      setIsLoggedIn(true);
+
+      const statusUpdateResponse = await updateUserStatus({
+        variables: { status: 'Online' },
+        context: {
+          headers: {
+            authorization: `Bearer ${AuthService.getToken()}`,
+          },
+        },
+      });
+      console.log('Status update response:', statusUpdateResponse);
 
       setFormData({
         email: '',
@@ -48,7 +65,7 @@ const Login = () => {
       console.log(`Navigating to /user/${username}`);
       navigate(`/user/${username}`);
     } catch (err) {
-      console.error('Login error:', err);
+      console.error('Login error:', err.message);
     }
   };
 
@@ -116,11 +133,11 @@ const Login = () => {
           <Button
             type="primary"
             htmlType="submit"
-            loading={loading}>
+            loading={loginLoading}>
             Login
           </Button>
         </Form.Item>
-      
+        {loginError && <p style={{ color: 'red' }}>Login Error: {loginError.message}</p>}
       </Form>
      </ConfigProvider>
     </Col>
