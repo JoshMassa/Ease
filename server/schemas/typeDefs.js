@@ -56,6 +56,7 @@ const typeDefs = gql`
     users: [User]
     user(id: ID!): User
     usersByStatus(status: String!): [User]
+    getUserByUsername(username: String!): User
   }
 
   type Mutation {

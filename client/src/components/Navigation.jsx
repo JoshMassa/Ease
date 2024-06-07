@@ -7,6 +7,7 @@ import {
 import { Menu } from 'antd';
 import { useQuery } from '@apollo/client';
 import { USERS_BY_STATUS } from '../utils/queries';
+import { useNavigate } from 'react-router-dom';
 
 function Navigation() {
     const [onlineUsers, setOnlineUsers] = useState([]);
@@ -27,10 +28,13 @@ function Navigation() {
         }
     }, [offlineData]);
 
+    const navigate = useNavigate();
+
     const generateUserItems = (users) => {
-        return users.map((user, index) => ({
-            key: `user-${index}`,
-            label: user.username
+        return users.map((user) => ({
+            key: `user-${user._id}`,
+            label: user.username,
+            onClick: () => navigate(`/user/profile/${user.username}`),
         }));
     };
 

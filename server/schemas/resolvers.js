@@ -57,6 +57,30 @@ const resolvers = {
         status: user.status,
       }));
     },
+    getUserByUsername: async (parent, { username }) => {
+      const user = await User.findOne({ username });
+      if (!user) {
+        throw new Error('No user found with that username');
+      }
+      return {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        friends: user.friends,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        city: user.city,
+        state: user.state,
+        country: user.country,
+        aboutMe: user.aboutMe,
+        profilePicture: user.profilePicture,
+        university: user.university,
+        major: user.major,
+        title: user.title,
+        company: user.company,
+        status: user.status,
+      }
+    },
     usersByStatus: async (_, { status }) => {
       try {
         return await User.find({ status });

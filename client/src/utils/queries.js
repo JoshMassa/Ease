@@ -64,30 +64,56 @@ export const GET_USER = gql`
   }
 `;
 
-export const GET_CURRENT_USER = gql`
-query GetCurrentUser {
-  currentUser {
-    _id
-    username
-    email
-    friends {
+export const GET_USER_BY_USERNAME = gql`
+query GetUserByUsername($username: String!) {
+    getUserByUsername(username: $username) {
       _id
       username
+      email
+      friends {
+        _id
+        username
+      }
+      firstName
+      lastName
+      city
+      state
+      country
+      aboutMe
+      profilePicture
+      university
+      major
+      title
+      company
+      status
     }
-    firstName
-    lastName
-    city
-    state
-    country
-    aboutMe
-    profilePicture
-    university
-    major
-    title
-    company
-    status
   }
-}
+`;
+
+export const GET_CURRENT_USER = gql`
+query GetCurrentUser {
+    currentUser {
+      _id
+      username
+      email
+      friends {
+        _id
+        username
+      }
+      firstName
+      lastName
+      city
+      state
+      country
+      aboutMe
+      profilePicture
+      university
+      major
+      title
+      company
+      status
+    }
+  }
 `;
 
 export const USERS_BY_STATUS = gql`
