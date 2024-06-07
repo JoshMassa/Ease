@@ -42,6 +42,8 @@
 #messages > li {
     padding: 0.5rem 1rem;
     border-radius: 1rem;
+    display: flex;
+    align-items: flex-start;
 }
 
 #messages > li:nth-child(odd) {
@@ -54,36 +56,47 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* html {
-    overflow-y: hidden;
-} */
-
-/* Styles for the scrollbar */
 #messages::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+    width: 12px;
 }
-  
-/* Track */
+
 #messages::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background color of the track */
-    border-radius: 10px; /* Round the corners of the track */
+    background: #f1f1f1;
+    border-radius: 10px;
 }
-  
-/* Handle */
+
 #messages::-webkit-scrollbar-thumb {
-    background: #888; /* Color of the scrollbar handle */
-    border-radius: 10px; /* Round the corners of the handle */
+    background: #888;
+    border-radius: 10px;
 }
 
-/* Handle on hover */
 #messages::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color of the handle on hover */
+    background: #555;
 }
 
-/* Styles for the scrollbar */
 #messages {
-    scrollbar-width: thin; /* Width of the scrollbar */
-    scrollbar-color: #888 #f1f1f1; /* Color of the handle and track */
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
 }
-  
-  
+
+.message-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.message-avatar {
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    max-width: calc(100% - 50px); /* Adjusted to ensure the message content does not overflow */
+    word-break: break-word; /* Ensures long words break to the next line */
+}
+
+.message-content strong {
+    margin-right: 5px;
+}
