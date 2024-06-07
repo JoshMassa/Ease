@@ -19,6 +19,7 @@ const resolvers = {
       if (!user) {
         throw new Error('No user found with that ID');
       }
+      const messageCount = await Message.countDocuments({ user: id });
       return {
         _id: user._id,
         username: user.username,
@@ -36,35 +37,41 @@ const resolvers = {
         title: user.title,
         company: user.company,
         status: user.status,
+        messageCount,
       };
     },
     // fetch all users
     users: async () => {
       const users = await User.find({}).populate('friends');
-      return users.map(user => ({
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        friends: user.friends,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        city: user.city,
-        state: user.state,
-        country: user.country,
-        aboutMe: user.aboutMe,
-        profilePicture: user.profilePicture,
-        university: user.university,
-        major: user.major,
-        title: user.title,
-        company: user.company,
-        status: user.status,
-      }));
+      return users.map(async user => {
+        const messageCount = await Message.countDocuments({ user: user._id });      
+        return {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          friends: user.friends,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          city: user.city,
+          state: user.state,
+          country: user.country,
+          aboutMe: user.aboutMe,
+          profilePicture: user.profilePicture,
+          university: user.university,
+          major: user.major,
+          title: user.title,
+          company: user.company,
+          status: user.status,
+          messageCount,
+        };
+      });
     },
     getUserByUsername: async (parent, { username }) => {
       const user = await User.findOne({ username }).populate('friends');
       if (!user) {
         throw new Error('No user found with that username');
       }
+      const messageCount = await Message.countDocuments({ user: user._id });
       const filteredFriends = user.friends.filter(friend => friend && friend.username);
       return {
         _id: user._id,
@@ -83,6 +90,7 @@ const resolvers = {
         title: user.title,
         company: user.company,
         status: user.status,
+        messageCount,
       }
     },
     usersByStatus: async (_, { status }) => {
@@ -170,7 +178,7 @@ const resolvers = {
         throw new Error('Failed to remove friend');
       }
     },
-    signup: async (_, { username, email, password }) => {
+    signup: async (_, { username, email, password }, context) => {
       const userExists = await User.findOne({ email });
       const usernameExists = await User.findOne({ username });
 
@@ -191,10 +199,8 @@ const resolvers = {
       const token = auth.signToken(user);
 
       return {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
         token,
+        user,
       };
     },
     login: async (_, { email, password }) => {

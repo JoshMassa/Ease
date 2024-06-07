@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import AuthService from '../utils/auth';
 
 const AuthContext = createContext();
@@ -15,11 +15,25 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const login = (token) => {
+    AuthService.login(token);
+    setIsLoggedIn(true);
+    setUser(AuthService.getProfile());
+  };
+
+  const logout = () => {
+    AuthService.logout();
+    setIsLoggedIn(false);
+    setUser(null);
+  };
+
   const value = {
     user,
     setUser,
     isLoggedIn,
     setIsLoggedIn,
+    login,
+    logout
   };
 
   return (
@@ -28,5 +42,7 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
 
 export default AuthContext;
