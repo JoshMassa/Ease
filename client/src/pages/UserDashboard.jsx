@@ -226,10 +226,6 @@ function UserDashboard() {
                   <div className="h5" style={{ fontSize: '30px' }}>
                     <i className="ni mr-2"></i>{firstName} {lastName}
                   </div>
-                  <div className="d-flex justify-content-center">
-                    <Button className="btn btn-sm btn-info mr-4" onClick={handleConnect}>{isFriend ? 'Remove Friend' : 'Add Friend'}</Button>
-                    <Button className="btn btn-sm btn-default float-right">Message</Button>
-                  </div>
                 </div>
                 <div className="text-center mt-4">
                   <Button icon={<UploadOutlined />} onClick={handleImageUpload}>
@@ -238,16 +234,12 @@ function UserDashboard() {
                 </div>
                 <div className="card-profile-stats d-flex justify-content-center mt-md-5">
                   <div>
-                    <span className="heading">22</span>
+                    <span className="heading">{data.user.friends.length}</span>
                     <span className="description">Friends</span>
                   </div>
                   <div>
-                    <span className="heading">10</span>
-                    <span className="description">Photos</span>
-                  </div>
-                  <div>
-                    <span className="heading">89</span>
-                    <span className="description">Comments</span>
+                    <span className="heading">{data.user.messageCount}</span>
+                    <span className="description">Messages Sent</span>
                   </div>
                 </div>
                 <Card.Meta
@@ -472,23 +464,25 @@ function UserDashboard() {
               </Card>
             </Col>
           </Row>
-          <UserProfile 
-            profilePicture={profilePicture}
-            firstName={firstName}
-            lastName={lastName}
-            username={username}
-            city={city}
-            state={state}
-            country={country}
-            title={title}
-            company={company}
-            university={university}
-            major={major}
-            aboutMe={aboutMe}
-            friends={friends}
-            isFriend={isFriend}
-            handleConnect={handleConnect}
-          />
+          <div style={{ display: 'none' }}>
+            <UserProfile 
+              profilePicture={profilePicture}
+              firstName={firstName}
+              lastName={lastName}
+              username={username}
+              city={city}
+              state={state}
+              country={country}
+              title={title}
+              company={company}
+              university={university}
+              major={major}
+              aboutMe={aboutMe}
+              friends={friends}
+              isFriend={isFriend}
+              handleConnect={handleConnect}
+            />
+          </div>
         </div>
       </Content>
     </Layout>

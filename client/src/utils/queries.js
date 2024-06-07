@@ -34,6 +34,7 @@ export const GET_USERS = gql`
       title
       company
       status
+      messageCount
     }
   }
 `;
@@ -60,6 +61,7 @@ export const GET_USER = gql`
       title
       company
       status
+      messageCount
     }
   }
 `;
@@ -86,6 +88,7 @@ query GetUserByUsername($username: String!) {
       title
       company
       status
+      messageCount
     }
   }
 `;

@@ -27,11 +27,12 @@ const typeDefs = gql`
     major: String
     title: String
     company: String
+    messageCount: Int
   }
 
   type Auth {
-    token: ID!
-    user: User
+    token: String!
+    user: User!
   }
 
   input UserUpdateInput {
@@ -61,7 +62,7 @@ const typeDefs = gql`
 
   type Mutation {
     addMessage(content: String!, client_offset: Int!): Message
-    signup(username: String!, email: String!, password: String!): Auth
+    signup(username: String!, email: String!, password: String!): Auth!
     login(email: String!, password: String!): Auth
     addFriend(userId: ID!, friendId: ID!): User
     removeFriend(userId: ID!, friendId: ID!): User
