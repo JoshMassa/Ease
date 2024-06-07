@@ -11,7 +11,19 @@ import { CurrentUserProvider } from './context/CurrentUserContext';
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        fields: {
+          friends : {
+            merge(existing = [], incoming = []) {
+              return incoming;
+            }
+          }
+        }
+      }
+    }
+  }),
 });
 
 const { Sider, Content } = Layout;

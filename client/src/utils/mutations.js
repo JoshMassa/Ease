@@ -62,7 +62,6 @@ export const ADD_FRIEND = gql`
     addFriend(userId: $userId, friendId: $friendId) {
       _id
       username
-      email
       friends {
         _id
         username
@@ -76,8 +75,7 @@ export const REMOVE_FRIEND = gql`
     removeFriend(userId: $userId, friendId: $friendId) {
       _id
       username
-      email
-      friend {
+      friends {
         _id
         username
       }

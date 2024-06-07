@@ -15,7 +15,10 @@ const resolvers = {
     },
     // fetch one user
     user: async (_, { id }) => {
-      const user = await User.findById(id);
+      const user = await User.findById(id).populate('friends');
+      if (!user) {
+        throw new Error('No user found with that ID');
+      }
       return {
         _id: user._id,
         username: user.username,
@@ -37,7 +40,7 @@ const resolvers = {
     },
     // fetch all users
     users: async () => {
-      const users = await User.find({});
+      const users = await User.find({}).populate('friends');
       return users.map(user => ({
         _id: user._id,
         username: user.username,
@@ -58,15 +61,16 @@ const resolvers = {
       }));
     },
     getUserByUsername: async (parent, { username }) => {
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ username }).populate('friends');
       if (!user) {
         throw new Error('No user found with that username');
       }
+      const filteredFriends = user.friends.filter(friend => friend && friend.username);
       return {
         _id: user._id,
         username: user.username,
         email: user.email,
-        friends: user.friends,
+        friends: filteredFriends,
         firstName: user.firstName,
         lastName: user.lastName,
         city: user.city,

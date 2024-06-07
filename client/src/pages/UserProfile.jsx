@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { Layout, Row, Col, Card, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { GET_USER_BY_USERNAME } from '../utils/queries';
+import { ADD_FRIEND, REMOVE_FRIEND } from '../utils/mutations';
 import AuthService from '../utils/auth';
 
 const { Content } = Layout;
@@ -13,14 +14,15 @@ function UserProfile() {
     const decoded = AuthService.getProfile();
     const currentUser = decoded._id;
     const [userData, setUserData] = useState(null);
-    console.log('userData:', userData);
     const [isFriend, setIsFriend] = useState(false);
 
     const { data, loading, error } = useQuery(GET_USER_BY_USERNAME, {
         variables: { username },
     });
-    console.log('Data:', data);
-    
+
+    const [addFriend] = useMutation(ADD_FRIEND);
+    const [removeFriend] = useMutation(REMOVE_FRIEND);
+
     useEffect(() => {
         if (data?.getUserByUsername) {
             setUserData(data.getUserByUsername);
@@ -72,7 +74,7 @@ function UserProfile() {
                                         <i className="ni mr-2"></i>{userData.firstName} {userData.lastName}
                                     </div>
                                     <div className="d-flex justify-content-center">
-                                        <Button className="btn btn-sm btn-info mr-4" onClick={handleConnect}>{userData.isFriend ? 'Remove Friend' : 'Add Friend'}</Button>
+                                        <Button className="btn btn-sm btn-info mr-4" onClick={handleConnect}>{isFriend ? 'Remove Friend' : 'Add Friend'}</Button>
                                         <Button className="btn btn-sm btn-default float-right">Message</Button>
                                     </div>
                                 </div>
@@ -123,11 +125,13 @@ function UserProfile() {
                                     {userData.friends.length > 0 ? (
                                         <ul>
                                             {userData.friends.map(friend => (
-                                                <li key={userData.friend._id}>
-                                                    <Link to={`/user/${userData.friend._id}`}>
+                                                friend && (
+                                                <li key={friend._id}>
+                                                    <Link to={`/user/${friend._id}`}>
                                                         {friend.username}
                                                     </Link>
                                                 </li>
+                                                )
                                             ))}
                                         </ul>
                                     ) : (
