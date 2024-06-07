@@ -18,7 +18,6 @@ export const GET_USERS = gql`
       _id
       username
       email
-      token
       friends {
         _id
         username
@@ -34,6 +33,7 @@ export const GET_USERS = gql`
       major
       title
       company
+      status
     }
   }
 `;
@@ -44,7 +44,6 @@ export const GET_USER = gql`
       _id
       username
       email
-      token
       friends {
         _id
         username
@@ -60,32 +59,69 @@ export const GET_USER = gql`
       major
       title
       company
+      status
+    }
+  }
+`;
+
+export const GET_USER_BY_USERNAME = gql`
+query GetUserByUsername($username: String!) {
+    getUserByUsername(username: $username) {
+      _id
+      username
+      email
+      friends {
+        _id
+        username
+      }
+      firstName
+      lastName
+      city
+      state
+      country
+      aboutMe
+      profilePicture
+      university
+      major
+      title
+      company
+      status
     }
   }
 `;
 
 export const GET_CURRENT_USER = gql`
 query GetCurrentUser {
-  currentUser {
-    _id
-    username
-    email
-    token
-    friends {
+    currentUser {
       _id
       username
+      email
+      friends {
+        _id
+        username
+      }
+      firstName
+      lastName
+      city
+      state
+      country
+      aboutMe
+      profilePicture
+      university
+      major
+      title
+      company
+      status
     }
-    firstName
-    lastName
-    city
-    state
-    country
-    aboutMe
-    profilePicture
-    university
-    major
-    title
-    company
   }
-}
+`;
+
+export const USERS_BY_STATUS = gql`
+  query usersByStatus($status: String!) {
+    usersByStatus(status: $status) {
+      _id
+      username
+      status
+    }
+  }
 `;

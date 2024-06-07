@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage.jsx';
 import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import UserDashboard from './pages/UserDashboard.jsx';
+import UserProfile from './pages/UserProfile.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
         path: `/user/:username`,
         element: <UserDashboard />
       },
+      {
+        path: `/user/profile/:username`,
+        element: <UserProfile />
+      }
     ],
   },
 ]);

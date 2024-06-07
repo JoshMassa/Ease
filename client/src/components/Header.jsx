@@ -1,34 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   HomeOutlined,
   SignatureOutlined,
   LoginOutlined,
   SettingOutlined,
-  LogoutOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import AuthService from '../utils/auth';
+import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import Logout from './Logout';
 
 const { Header: AntHeader } = Layout;
 
 function Header() {
   console.log('Header component rendered');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setIsLoggedIn(AuthService.loggedIn());
-  }, []);
-
-  const handleLogout = () => {
-    AuthService.logout();
-    console.log('Logout clicked'); // Add log to verify click
-    setIsLoggedIn(false);
-    navigate('/login');
-  };
+  const { user, isLoggedIn } = useContext(AuthContext);
 
   const items = [
     {
@@ -52,10 +38,8 @@ function Header() {
       icon: <SettingOutlined />,
     },
     isLoggedIn && {
-      label: 'Logout',
+      label: <Logout />,
       key: 'logout',
-      icon: <LogoutOutlined />,
-      onClick: handleLogout,
     },
   ].filter(Boolean); // Filter out any falsey values (e.g., when isLoggedIn is false)
 

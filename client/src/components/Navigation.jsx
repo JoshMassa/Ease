@@ -1,10 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     UserOutlined,
     SettingOutlined,
     CoffeeOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
+import { useQuery } from '@apollo/client';
+import { USERS_BY_STATUS } from '../utils/queries';
+import { useNavigate } from 'react-router-dom';
+
+function Navigation() {
+    const [onlineUsers, setOnlineUsers] = useState([]);
+    const [offlineUsers, setOfflineUsers] = useState([]);
+
+    const { data: onlineData } = useQuery(USERS_BY_STATUS, { variables: { status: 'Online' } });
+    const { data: offlineData } = useQuery(USERS_BY_STATUS, { variables: { status: 'Offline' } });
+
+    useEffect(() => {
+        if (onlineData) {
+            setOnlineUsers(onlineData.usersByStatus);
+        }
+    }, [onlineData]);
+
+    useEffect(() => {
+        if (offlineData) {
+            setOfflineUsers(offlineData.usersByStatus);
+        }
+    }, [offlineData]);
+
+    const navigate = useNavigate();
+
+    const generateUserItems = (users) => {
+        return users.map((user) => ({
+            key: `user-${user._id}`,
+            label: user.username,
+            onClick: () => navigate(`/user/profile/${user.username}`),
+        }));
+    };
 
 const items2 = [
     {
@@ -16,31 +48,13 @@ const items2 = [
                 key: 'g1',
                 label: 'Online',
                 type: 'group',
-                children: [
-                    {
-                        key: '1',
-                        label: 'User 1',
-                    },
-                    {
-                        key: '2',
-                        label: 'User 2',
-                    },
-                ],
+                children: generateUserItems(onlineUsers),
             },
             {
                 key: 'g2',
-                label: 'Away',
+                label: 'Offline',
                 type: 'group',
-                children: [
-                    {
-                        key: '3',
-                        label: 'User 3',
-                    },
-                    {
-                        key: '4',
-                        label: 'User 4',
-                    },
-                ],
+                children: generateUserItems(offlineUsers),
             },
         ],
     },
@@ -86,7 +100,6 @@ const items2 = [
     },
 ];
 
-function Navigation() {
     return (
             <>
                 <Menu

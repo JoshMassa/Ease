@@ -7,6 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ADD_FRIEND, REMOVE_FRIEND, UPDATE_USER } from '../utils/mutations';
 import { GET_USER } from '../utils/queries';
 import AuthService from '../utils/auth';
+import UserProfile from './UserProfile';
 
 const { Content } = Layout;
 
@@ -16,11 +17,14 @@ function UserDashboard() {
   const usernames = decoded.username;
   const navigate = useNavigate();
 
+  const [hasRedirected, setHasRedirected] = useState(false);
+
   useEffect(() => {
-    if (usernames) {
-      navigate(`/user/${currentUser.username}`);
+    if (decoded && !hasRedirected) {
+      navigate(`/user/${usernames}`);
+      setHasRedirected(true);
     }
-  }, [userId, navigate]);
+  }, [navigate, decoded, hasRedirected, usernames]);
 
   const currentUser = AuthService.getProfile();
   console.log('userId:', userId);
@@ -468,6 +472,23 @@ function UserDashboard() {
               </Card>
             </Col>
           </Row>
+          <UserProfile 
+            profilePicture={profilePicture}
+            firstName={firstName}
+            lastName={lastName}
+            username={username}
+            city={city}
+            state={state}
+            country={country}
+            title={title}
+            company={company}
+            university={university}
+            major={major}
+            aboutMe={aboutMe}
+            friends={friends}
+            isFriend={isFriend}
+            handleConnect={handleConnect}
+          />
         </div>
       </Content>
     </Layout>

@@ -14,7 +14,7 @@ const typeDefs = gql`
     _id: ID!
     username: String!
     email: String!
-    token: String
+    status: String!
     friends: [User]
     firstName: String
     lastName: String
@@ -27,6 +27,11 @@ const typeDefs = gql`
     major: String
     title: String
     company: String
+  }
+
+  type Auth {
+    token: ID!
+    user: User
   }
 
   input UserUpdateInput {
@@ -43,21 +48,26 @@ const typeDefs = gql`
     major: String
     title: String
     company: String
+    status: String
   }
 
   type Query {
     messages: [Message]
     users: [User]
     user(id: ID!): User
+    usersByStatus(status: String!): [User]
+    getUserByUsername(username: String!): User
   }
 
   type Mutation {
     addMessage(content: String!, client_offset: Int!): Message
-    signup(username: String!, email: String!, password: String!): User!
-    login(email: String!, password: String!): User!
+    signup(username: String!, email: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
     addFriend(userId: ID!, friendId: ID!): User
     removeFriend(userId: ID!, friendId: ID!): User
     updateUser(id: ID!, input: UserUpdateInput!): User
+    updateUserStatus(status: String!): User
+    logout: User
   }
 `;
 

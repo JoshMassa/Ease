@@ -4,7 +4,7 @@ class AuthService {
   getProfile() {
     const token = this.getToken();
     if (!token) return null;
-    const decoded = jwtDecode(token); // Use jwtDecode directly
+    const decoded = jwtDecode(token);
     return decoded;
   }
 
@@ -15,8 +15,10 @@ class AuthService {
 
   isTokenExpired(token) {
     try {
-      const decoded = jwtDecode(token); // Use jwtDecode directly
-      return decoded.exp < Date.now() / 1000;
+      const decoded = jwtDecode(token);
+      if (decoded.exp < Date.now() / 1000) {
+        return true;
+      } else return false;
     } catch (err) {
       return false;
     }

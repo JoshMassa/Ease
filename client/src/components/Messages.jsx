@@ -13,7 +13,7 @@ const Messages = () => {
   useEffect(() => {
     if (socket) {
       socket.on('chat message', (msg) => {
-        console.log('Received message from server:', msg);
+        // console.log('Received message from server:', msg);
         setMessages((prevMessages) => {
           const isDuplicate = prevMessages.some((message) => message.messageId === msg.messageId || message._id === msg.messageId);
           if (!isDuplicate) {
