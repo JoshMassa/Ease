@@ -96,10 +96,10 @@ function UserProfile() {
                                                 <Divider style={{ fontSize: "24px", fontWeight: '600'}}> @{userData.username}</Divider>
                                             </Col>
                                             <Col className="font-weight-300">
-                                                <Text className=""style={{fontWeight: '600', textAlign: 'center'}}>📍 {userData.city} {userData.state} {userData.country}</Text>
+                                                <Text className=""style={{fontWeight: '600'}}>📍 {userData.city} {userData.state} {userData.country}</Text>
                                             </Col>
                                             <Col className="" style={{ fontSize: '20px' }}>
-                                                <Text className="">{userData.title} at {userData.company}</Text>
+                                                <Text className="" style={{fontWeight: '600', fontSize: '20px'}}>{userData.title} , {userData.company}</Text>
                                             </Col>
                                             <Col>
                                                 <Text className=""></Text>{userData.university}
