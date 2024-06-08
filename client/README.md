@@ -7,7 +7,7 @@
 
 1. Clean and Simple UI
 
-   * Our group implemented Ant Design for our project's UI and created a clean, simple, and user-friendly UI that everyone can enjoy!
+   * Our group implemented Ant Design for our project's UI to create a clean, simple, and user-friendly UI that everyone can enjoy!
 
 2. Socket.io Messaging 
 
@@ -15,19 +15,18 @@
 
 3. User Account
 
-    * must make an account before being able to enjoy our app!
+    * Each user is recommended to create an account so they can have the option to add a photo and details about themselves for a more personal touch!
 
 4. Add/Delete Friends
 
-    * add and or delete friends
+    * Each user with an account is given the option to add and/or delete friends
 
 5. Dark/Light Theme Mode
 
-    * dark and light theme mode to reduce eye strain
+    * We implemented the option to use our chat-app with a dark mode for comfort and reduced eye strain
 
-6. User Dashboard
-
-    * Have the option to add a photo and add personal details
+6. Emoji Feature
+    * Our chat app gives the option for users to add emojis to their messages!
 
 7. Technologies Used
 
@@ -37,18 +36,21 @@
     * Apollo
     * JWT
     * Cloudinary
+    * Emoji-Mart
 
 ## Usage
 
-To view the live application, please visit https://chat-test-bquw.onrender.com
+To view the live application, please visit <br>
+https://chat-test-bquw.onrender.com
 
-To view this project's repository, please visit https://github.com/JoshMassa/Ease
+To view this project's repository, please visit <br>
+https://github.com/JoshMassa/Ease
 
 <br>
 
 When viewing the app on a desktop, the webpage should resemble the following image:
 
-![Desktop View]()
+![Desktop View](/assets/ease-fs-ss.png)
 
 When viewing the app on a mobile device, the webpage should resemble the following image:
 
