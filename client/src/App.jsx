@@ -29,6 +29,7 @@ const client = new ApolloClient({
 const { Sider, Content } = Layout;
 
 const App = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const [currentTheme, setCurrentTheme] = useState('light');
   const changeTheme = (value) => {
     setCurrentTheme(value ? 'dark' : 'light');
@@ -42,7 +43,9 @@ const App = () => {
     "itemSelectedColor": "#3c89e8",
     "itemSelectedBg": "#E6F4FF",
     "horizontalItemSelectedColor": '#3c89e8',
-    "itemHoverColor": "#3c89e8"
+    "itemHoverColor": "#3c89e8",
+    "triggerBg": "#ffffff",
+    "triggerColor": "#4b4b4b"
   }
   const DarkTheme =
   {
@@ -54,7 +57,8 @@ const App = () => {
     "itemSelectedBg": "rgba(0, 0, 0, 0.06)",
     "itemHoverBg": "rgba(0, 0, 0, 0.06)",
     "horizontalItemSelectedColor": '#65a9f3',
-    "colorPrimary": "#1668dc"
+    "colorPrimary": "#1668dc",
+    "triggerBg": "#15325b",
   }
 
   console.log('App component rendered');
@@ -80,7 +84,7 @@ const App = () => {
         style={{ minHeight: '100vh'}}>
           <Header/>
           <Layout>
-            <Sider>
+            <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
               <Navigation/>
             </Sider>
             <Layout>
