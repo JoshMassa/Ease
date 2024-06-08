@@ -1,28 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useMutation } from "@apollo/client";
-import gql from "graphql-tag";
-import FormInput from "../components/FormInput";
+import { useNavigate } from 'react-router-dom';
 import "../styles/Login.css";
-import { Button } from "antd";
+import { Form, Input, Button, Typography, Row, Col, ConfigProvider } from "antd";
+import AuthService from "../utils/auth";
+import { LOGIN, UPDATE_USER_STATUS } from "../utils/mutations";
+import AuthContext from "../context/AuthContext";
 
-const LOGIN_USER = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      _id
-      username
-      email
-      token
-    }
-  }
-`;
+const { Title } = Typography;
 
 const Login = () => {
+  const { setUser, setIsLoggedIn } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [login, { loading, error }] = useMutation(LOGIN_USER);
+  const navigate = useNavigate();
+  const [login, { loading: loginLoading, error: loginError }] = useMutation(LOGIN);
+  const [updateUserStatus] = useMutation(UPDATE_USER_STATUS, {
+    context: {
+      headers: {
+        authorization: `Bearer ${AuthService.getToken()}`,
+      },
+    },
+  });
 
   const handleChange = (e) => {
     setFormData({
@@ -31,51 +33,115 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values) => {
     try {
       const { data } = await login({
-        variables: { ...formData },
+        variables: { ...values },
       });
+      console.log('Login data:', data);
+      AuthService.login(data.login.token);
+
+      const decoded = AuthService.getProfile();
+      console.log('Decoded token:', decoded);
+      setUser(decoded);
+      setIsLoggedIn(true);
+
+      const statusUpdateResponse = await updateUserStatus({
+        variables: { status: 'Online' },
+        context: {
+          headers: {
+            authorization: `Bearer ${AuthService.getToken()}`,
+          },
+        },
+      });
+      console.log('Status update response:', statusUpdateResponse);
+
       setFormData({
         email: '',
         password: '',
       });
-      console.log(data);
+
+      const username = decoded.username;
+      console.log(`Navigating to /user/${username}`);
+      navigate(`/user/${username}`);
     } catch (err) {
-      console.error(err);
+      console.error('Login error:', err.message);
     }
   };
 
   return (
-    <div id="login-container">
-      <h2>Login</h2>
-      <form id="login-form" onSubmit={handleSubmit}>
-        <FormInput
-          type="email"
+   <Row justify={"center"}>
+    <Col>
+     <ConfigProvider
+     theme={{
+
+     }}>
+      <Form
+      id="login-form"
+      onFinish={handleSubmit}
+      initialValues={formData}
+      labelCol={{
+        span: 8,
+      }}
+      wrapperCol={{
+        span: 16,
+      }}
+      style={{
+        maxWidth: 600,
+      }}
+      >
+        <Title     
+          level={2}
+          style={{
+          textAlign: 'center'
+        }}>
+      Log in
+    </Title>
+
+        <Form.Item
+          label="Email"
           name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email"
-        />
-        <FormInput
-          type="password"
+          rules={[{ required: true, message: 'Please enter your email' }]}
+        >
+          <Input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
           name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder="Password"
-        />
-        <Button type="primary" htmlType="submit" style={{ backgroundColor: '#222E50', borderColor: '#222E50' }}>Login</Button>
-        {loading && <p>Loading...</p>}
-        {error && (
-          <p>
-            {!formData.email || !formData.password
-              ? 'You must enter an email and password.'
-              : 'Something went wrong.'}
-          </p>
-        )}
-      </form>
-    </div>
+          rules={[{ required: true, message: 'Please enter your password' }]}
+        >
+          <Input.Password
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+          />
+        </Form.Item>
+
+        <Form.Item
+         wrapperCol={{
+          offset: 8,
+          span: 16,
+        }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loginLoading}>
+            Login
+          </Button>
+        </Form.Item>
+        {loginError && <p style={{ color: 'red' }}>Login Error: {loginError.message}</p>}
+      </Form>
+     </ConfigProvider>
+    </Col>
+   </Row>
   );
 };
 

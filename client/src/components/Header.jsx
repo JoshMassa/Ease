@@ -1,63 +1,67 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
-    HomeOutlined,
-    SignatureOutlined,
-    MoonFilled,
-    LoginOutlined,
+  HomeOutlined,
+  SignatureOutlined,
+  LoginOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
+import { Link } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
+import Logout from './Logout';
 
 const { Header: AntHeader } = Layout;
 
-const items = [
-    {
-        label: "Home",
-        key: 'homePage',
-        icon: <HomeOutlined/>,
-
-    },
-    {
-        label: "Sign Up",
-        key: "signUp",
-        icon: <SignatureOutlined/>,
-
-    },
-    {
-        label: "Log In",
-        key: 'logIn',
-        icon: <LoginOutlined/>,
-
-    },
-]
-
 function Header() {
-    console.log('Header component rendered');
-    return (
-        <AntHeader
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-            }}
-        >
-            <div className="demo-logo" />
-            <Menu
-                theme="dark"
-                mode="horizontal"
-                defaultSelectedKeys={['current']}
-                items={items}
-                style={{
-                    flex: 1,
-                    minWidth: 0,
-                }}
-            />
-            <MoonFilled
-                style={{
-                    color: "#ffffff",
-                    fontSize: '25px',
-                }}
-            />
-        </AntHeader>
-    );
+  console.log('Header component rendered');
+  const { user, isLoggedIn } = useContext(AuthContext);
+
+  const items = [
+    {
+      label: <Link to='/'>Home</Link>,
+      key: 'homePage',
+      icon: <HomeOutlined />,
+    },
+    !isLoggedIn && {
+      label: <Link to='/signup'>Sign Up</Link>,
+      key: 'signUp',
+      icon: <SignatureOutlined />,
+    },
+    !isLoggedIn && {
+      label: <Link to='/login'>Log In</Link>,
+      key: 'logIn',
+      icon: <LoginOutlined />,
+    },
+    isLoggedIn && {
+      label: <Link to={`/user/${user ? user.username : ':username'}`}>Dashboard</Link>,
+      key: 'userDashboard',
+      icon: <SettingOutlined />,
+    },
+    isLoggedIn && {
+      label: <Logout />,
+      key: 'logout',
+    },
+  ].filter(Boolean); // Filter out any falsey values (e.g., when isLoggedIn is false)
+
+  return (
+    <AntHeader
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <div className="demo-logo" />
+      <Menu
+        mode="horizontal"
+        defaultSelectedKeys={['current']}
+        items={items}
+        style={{
+          flex: 1,
+          minWidth: 0,
+        }}
+      />
+    </AntHeader>
+  );
 }
 
 export default Header;
