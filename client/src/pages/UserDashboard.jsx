@@ -246,14 +246,14 @@ function UserDashboard() {
                 <Card.Meta
                   description={
                     <Col className="" style={{textAlign: 'center'}}>
-                      <Col className="" style={{ }}>
+                      <Col>
                         <Divider style={{ fontSize: "24px", fontWeight: '600'}}> @{username}</Divider>
                       </Col>
-                      <Col className="font-weight-300">
-                        <Text className=""style={{fontWeight: '600', textAlign: 'center'}}>📍 {city} {state} {country}</Text>
+                      <Col className="">
+                        <Text className=""style={{fontWeight: '600', textAlign: 'center'}}>📍 {city} {state} {country} </Text>
                       </Col>
-                      <Col className="" style={{ fontSize: '20px', textAlign: 'center' }}>
-                        <Text className="">{title} at {company}</Text>
+                      <Col className="">
+                        <Text className="" style={{fontWeight: '600', fontSize: '20px'}}>{title} , {company}</Text>
                       </Col>
                       <Col>
                         <Text className=""></Text>{university}
