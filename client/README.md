@@ -52,9 +52,9 @@ When viewing the app on a desktop, the webpage should resemble the following ima
 
 ![Desktop View](/assets/ease-fs-ss.png)
 
-When viewing the app on a mobile device, the webpage should resemble the following image:
+When viewing the app on a tablet device, the webpage should resemble the following image:
 
-![Mobile View]()
+![Tablet View](/assets/ease-tv-ss.png)
 
 ## Credits
 
