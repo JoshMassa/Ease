@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Input, Button, Card, Row, Col } from 'antd';
+import { Layout, Input, Button, Card, Row, Col, Typography, Divider, List } from 'antd';
 import '../styles/UserDashboard.css';
 import { UploadOutlined } from '@ant-design/icons';
 import { useQuery, useMutation } from '@apollo/client';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Form } from 'react-router-dom';
 import { ADD_FRIEND, REMOVE_FRIEND, UPDATE_USER } from '../utils/mutations';
 import { GET_USER } from '../utils/queries';
 import AuthService from '../utils/auth';
 import UserProfile from './UserProfile';
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
+const { TextArea } = Input;
 
 function UserDashboard() {
   const decoded = AuthService.getProfile();
@@ -205,7 +207,7 @@ function UserDashboard() {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Content style={{ padding: '24px', background: '#f0f2f5' }}>
+      <Content style={{ padding: '24px' }}>
         <div className="container-fluid mt-7" style={{ marginTop: '75px' }}>
           <Row gutter={[16, 16]}>
             <Col xl={8} md={24}>
@@ -222,47 +224,46 @@ function UserDashboard() {
                   </div>
                 }
               >
-                <div className="card-header text-center border-0 pt-8 pt-md-4 pb-0">
-                  <div className="h5" style={{ fontSize: '30px' }}>
-                    <i className="ni mr-2"></i>{firstName} {lastName}
-                  </div>
-                </div>
-                <div className="text-center mt-4">
+                <Col style={{textAlign: 'center'}}>
+                    <Text className="centered" style={{ fontSize: '30px', padding: '24px' }}>{firstName} {lastName}</Text>
+                  </Col>
+                
+                <Col className="text-center mt-4">
                   <Button icon={<UploadOutlined />} onClick={handleImageUpload}>
                     Change Profile Picture
                   </Button>
-                </div>
-                <div className="card-profile-stats d-flex justify-content-center mt-md-5">
-                  <div>
+                </Col>
+                <Col className="card-profile-stats d-flex justify-content-center mt-md-5">
+                  <Col>
                     <span className="heading">{data.user.friends.length}</span>
                     <span className="description">Friends</span>
-                  </div>
-                  <div>
+                  </Col>
+                  <Col>
                     <span className="heading">{data.user.messageCount}</span>
                     <span className="description">Messages Sent</span>
-                  </div>
-                </div>
+                  </Col>
+                </Col>
                 <Card.Meta
                   description={
-                    <div className="text-center">
-                      <div className="h5 font-weight-600" style={{ fontSize: "24px" }}>
-                        <i className="ni location_pin mr-2"></i>{username}
-                      </div>
-                      <div className="h5 font-weight-300">
-                        <i className="ni location_pin mr-2"></i>{city} {state} {country}
-                      </div>
-                      <div className="h5" style={{ fontSize: '20px' }}>
-                        <i className="ni mr-2"></i>{title} {company}
-                      </div>
-                      <div>
-                        <i className="ni mr-2"></i>{university}
-                      </div>
-                      <div>
-                        <i className="ni mr-2"></i>{major}
-                      </div>
-                      <hr className="my-4" />
-                      <p>{aboutMe}</p>
-                    </div>
+                    <Col className="" style={{textAlign: 'center'}}>
+                      <Col>
+                        <Divider style={{ fontSize: "24px", fontWeight: '600'}}> @{username}</Divider>
+                      </Col>
+                      <Col className="">
+                        <Text className=""style={{fontWeight: '600', textAlign: 'center'}}>📍 {city} {state} {country} </Text>
+                      </Col>
+                      <Col className="">
+                        <Text className="" style={{fontWeight: '600', fontSize: '20px'}}>{title} , {company}</Text>
+                      </Col>
+                      <Col>
+                        <Text className=""></Text>{university}
+                      </Col>
+                      <Col>
+                        <Text className=""></Text>{major}
+                      </Col>
+                      <Divider>About Me</Divider>
+                      <Text>{aboutMe}</Text>
+                    </Col>
                   }
                 />
               </Card>
@@ -270,38 +271,38 @@ function UserDashboard() {
 
             <Col xxl={16} xl={16} lg={24} md={24} sm={12} xs={24}>
                 <Card>
-                  <h6 className="heading-small text-muted mb-4">Friends</h6>
-                  <div className="pl-lg-4">
+                  <Text className="heading-small text-muted mb-4 h6">Friends</Text>
+                  <Col className="pl-lg-4">
                     {friends.length > 0 ? (
-                      <ul>
+                      <List>
                         {friends.map(friend => (
-                          <li key={friend._id}>
-                            <Link to={`/user/${friend._id}`}>
-                              {friend.username}
+                          <List.Item key={friend._id}>
+                            <Link style={{color:"#3c89e8"}} to={`/user/${friend._id}` } >
+                            ⭐️ {friend.username}
                             </Link>
-                          </li>
+                          </List.Item>
                         ))}
-                      </ul>
+                      </List>
                     ) : (
-                      <p>No friends yet.</p>
+                      <Text>No friends yet.</Text>
                     )}
-                  </div>
+                  </Col>
                 </Card>
               </Col>
 
             <Col xl={8} md={24}>
               <Card
                 title="My account"
-                className="bg-secondary shadow"
+                className=""
                 bordered={false}
                 extra={<Button onClick={handleSave}>Save</Button>}
               >
-                <form>
-                  <h6 className="heading-small text-muted mb-4">User information</h6>
-                  <div className="pl-lg-4">
+                <Form>
+                  <Text className="heading-small text-muted mb-4 h6">User information</Text>
+                  <Col className="">
                     <Row gutter={[16, 16]}>
                       <Col lg={12} xs={24}>
-                        <div className="form-group focused">
+                        <Col className="form-group focused">
                           <label className="form-control-label" htmlFor="input-username">Username</label>
                           <Input
                             id="input-username"
@@ -309,7 +310,7 @@ function UserDashboard() {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                           />
-                        </div>
+                        </Col>
                       </Col>
                       <Col lg={12} xs={24}>
                         <div className="form-group">
@@ -326,7 +327,7 @@ function UserDashboard() {
                     </Row>
                     <Row gutter={[16, 16]}>
                       <Col lg={12} xs={24}>
-                        <div className="form-group focused">
+                        <Col className="form-group focused">
                           <label className="form-control-label" htmlFor="input-first-name">First name</label>
                           <Input
                             id="input-first-name"
@@ -334,7 +335,7 @@ function UserDashboard() {
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                           />
-                        </div>
+                        </Col>
                       </Col>
                       <Col lg={12} xs={24}>
                         <div className="form-group focused">
@@ -348,9 +349,9 @@ function UserDashboard() {
                         </div>
                       </Col>
                     </Row>
-                  </div>
+                  </Col>
                   <hr className="my-4" />
-                  <h6 className="heading-small text-muted mb-4">Location</h6>
+                  <Text className="heading-small text-muted mb-4 h6">Location</Text>
                   <div className="pl-lg-4">
                     <Row gutter={[16, 16]}>
                       <Col lg={8} xs={24}>
@@ -388,15 +389,15 @@ function UserDashboard() {
                       </Col>
                     </Row>
                   </div>
-                  <hr className="my-4" />
-                  <h6 className="heading-small text-muted mb-4">Employment</h6>
-                  <div className="pl-lg-4">
+                  <Divider className="my-4" />
+                  <Text className="heading-small text-muted mb-4 h6">Employment</Text>
+                  <Col className="pl-lg-4">
                     <div className="form-group focused">
-                      <label htmlFor="title">Title</label>
-                      <textarea
+                      <label className="form-control-label" htmlFor="title">Title</label>
+                      <Input
                         id="title"
                         rows="1"
-                        className="form-control form-control-alternative"
+                        className=""
                         placeholder="What is your job title?"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -404,27 +405,27 @@ function UserDashboard() {
                       />
                     </div>
                     <div className="form-group focused">
-                      <label htmlFor="company">Company</label>
-                      <textarea
+                      <label className="form-control-label" htmlFor="company">Company</label>
+                      <Input
                         id="company"
                         rows="1"
-                        className="form-control form-control-alternative"
+                        className=""
                         placeholder="What company do you work for?"
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
                         resize="none"
                       />
                     </div>
-                  </div>
-                  <hr className="my-4" />
+                  </Col>
+                  <Divider className="my-4" />
                   <h6 className="heading-small text-muted mb-4">Education</h6>
                   <div className="pl-lg-4">
                     <div className="form-group focused">
                       <label htmlFor="university">University</label>
-                      <textarea
+                      <TextArea
                         id="university"
                         rows="1"
-                        className="form-control form-control-alternative"
+                        className=""
                         placeholder="What University did you attend?"
                         value={university}
                         onChange={(e) => setUniversity(e.target.value)}
@@ -433,10 +434,10 @@ function UserDashboard() {
                     </div>
                     <div className="form-group focused">
                       <label htmlFor="major">Major</label>
-                      <textarea
+                      <TextArea
                         id="major"
                         rows="1"
-                        className="form-control form-control-alternative"
+                        className=""
                         placeholder="What Major did you study?"
                         value={major}
                         onChange={(e) => setMajor(e.target.value)}
@@ -444,15 +445,13 @@ function UserDashboard() {
                       />
                     </div>
                   </div>
-                  <hr className="my-4" />
+                  <Divider className="my-4" />
                   <h6 className="heading-small text-muted mb-4">About me</h6>
                   <div className="pl-lg-4">
                     <div className="form-group focused">
-                      <label htmlFor="about-me">About Me</label>
-                      <textarea
+                      <TextArea rows={4}
                         id="about-me"
-                        rows="4"
-                        className="form-control form-control-alternative"
+                        className=""
                         placeholder="A few words about you ..."
                         value={aboutMe}
                         onChange={(e) => setAboutMe(e.target.value)}
@@ -460,7 +459,7 @@ function UserDashboard() {
                       />
                     </div>
                   </div>
-                </form>
+                </Form>
               </Card>
             </Col>
           </Row>
