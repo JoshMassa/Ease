@@ -36,7 +36,6 @@ class AuthService {
     console.log('Logging out...');
     localStorage.removeItem('id_token');
     console.log('Token removed:', !localStorage.getItem('id_token')); // Check if token is removed
-    window.location.assign('/login');
   }
 }
 

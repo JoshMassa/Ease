@@ -1,4 +1,3 @@
-// vite.config.js
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { join } from 'path';
@@ -24,11 +23,23 @@ export default ({ mode }) => {
           target: env.VITE_SOCKET_URL || 'http://localhost:3000',
           ws: true,  // Enable WebSocket proxying
           changeOrigin: true // Ensure the origin is changed to the target URL
+        },
+        '/login': {
+          target: 'https://chat-test-bquw.onrender.com/login' || 'http://localhost:3000/login',
+          changeOrigin: true,
         }
       }
     },
     build: {
-      outDir: join(__dirname, 'dist')
+      outDir: 'dist',
+      assetsDir: 'assets',
+      rollupOptions: {
+        output: {
+          chunkFileNames: 'assets/[name]-[hash].js',
+          entryFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash][extname]'
+        }
+      }
     }
   });
 };
