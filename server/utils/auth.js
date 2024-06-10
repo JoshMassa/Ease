@@ -32,8 +32,8 @@ export default {
       throw new GraphQLError('Invalid token');
     }
   },
-  signToken: function ({ username, email, _id }) {
-    const payload = { username, email, _id };
+  signToken: function ({ username, email, _id, profilePicture }) {
+    const payload = { username, email, _id, profilePicture };
     return jwt.sign(payload, secret, { expiresIn: expiration });
   },
 };

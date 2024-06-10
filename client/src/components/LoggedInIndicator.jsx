@@ -1,27 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import AuthService from '../utils/auth';
+import React, { useContext, useEffect, useState } from 'react';
+import AuthContext from '../context/AuthContext';
 
 const LoggedInIndicator = () => {
-  const [user, setUser] = useState(null);
+  const { user, isLoggedIn } = useContext(AuthContext);
+  const [displayUser, setDisplayUser] = useState(null);
 
   useEffect(() => {
-    const updateUser = () => {
-      const profile = AuthService.getProfile();
-      console.log('Profile:', profile);
-      setUser(profile);
-    };
-
-    updateUser();
-
-    const handleStorageChange = () => {
-      updateUser();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
+    setDisplayUser(user);
+  }, [user, isLoggedIn]);
 
   return (
     <div style={{
@@ -29,12 +15,12 @@ const LoggedInIndicator = () => {
       bottom: 10, // Position from the bottom
       right: 10,  // Position from the right
       padding: '5px 10px',
-      background: user ? 'green' : 'red',
+      background: isLoggedIn ? 'green' : 'red',
       color: 'white',
       borderRadius: '5px',
       zIndex: 1000, // Ensure it stays above other elements
     }}>
-      {user ? `Logged in as ${user.username || 'Unknown User'}` : 'Not Logged In'}
+      {isLoggedIn ? `Logged in as ${displayUser?.username || 'Unknown User'}` : 'Not Logged In'}
     </div>
   );
 };

@@ -165,9 +165,6 @@ async function startServer() {
 
     io.on('connection', async (socket) => {
       console.log('a user connected');
-      socket.on('disconnect', () => {
-        console.log('user disconnected');
-      });
 
       socket.on('chat message', async (message, callback) => {
         console.log('message: ', message);
@@ -176,7 +173,11 @@ async function startServer() {
           newMessage = new Message({
             content: message.content,
             client_offset: message.client_offset,
-            user: message.user._id
+            user: {
+              _id: message.user._id,
+              username: message.user.username,
+              profilePicture: message.user.profilePicture
+            }
           });
           await newMessage.save();
           const populatedMessage = await newMessage.populate('user');
@@ -221,7 +222,10 @@ async function startServer() {
           console.error('Error retrieving messages', error);
         }
       }
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
     });
+  });
 
     const PORT = process.env.PORT || 3000;
     server.listen(PORT, () => {

@@ -11,7 +11,7 @@ import LoggedInIndicator from './components/LoggedInIndicator';
 import { CurrentUserProvider } from './context/CurrentUserContext';
 
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_SOCKET_URL,
+  uri: import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {

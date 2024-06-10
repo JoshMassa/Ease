@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 
 const SocketContext = createContext();
 
@@ -11,19 +11,20 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
-      auth: {
-        serverOffset: 0,
-      },
-      ackTimeout: 10000,
-      retries: 3,
-      reconnection: true,
-      reconnectionDelay: 500,
-      reconnectionDelayMax: 5000,
+    const newSocket = io('https://chat-test-bquw.onrender.com' || 'http://localhost:3000', {
+      withCredentials: true,
     });
 
     setSocket(newSocket);
 
+    newSocket.on('connect', () => {
+      console.log('Connected to Socket.IO server');
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('Disconnected from Socket.IO server');
+    });
+    
     return () => newSocket.close();
   }, []);
 

@@ -22,7 +22,7 @@ const Messages = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/messages');
+      const response = await axios.get('https://chat-test-bquw.onrender.com/messages' || 'http://localhost:3000/messages');
       if (Array.isArray(response.data)) {
         setMessages(response.data);
         scrollToBottom();
@@ -54,9 +54,14 @@ const Messages = () => {
         console.log('Connected to Socket.IO server');
       });
 
+      socket.on('disconnect', () => {
+        console.log('Disconnected from Socket.IO server');
+      })
+
       return () => {
         socket.off('chat message');
         socket.off('connect');
+        socket.off('disconnect');
       };
     }
   }, [socket]);
@@ -92,21 +97,24 @@ const Messages = () => {
   };
 
   const sendMessage = () => {
-    if (socket && input && currentUser) {
-      const userProfilePicture = currentUser.profilePicture || '';
+    if (socket && socket.connected && input && currentUser) {
       const message = {
         content: input,
         client_offset: new Date().toISOString(),
         user: { 
           _id: currentUser._id, 
           username: currentUser.username, 
-          profilePicture: userProfilePicture
+          profilePicture: currentUser.profilePicture 
         },
       };
-      console.error('Error sending message:', message);
+      console.log('Sending message:', message);
       console.log('currentUser:', currentUser);
-      socket.emit('chat message', message);
-      setInput(''); // clear the input field
+
+      socket.emit('chat message', message, () => {
+          console.log('Message sent successfully');
+          setInput(''); // clear the input field
+        }
+      )
     }
   };
 
@@ -146,6 +154,7 @@ const Messages = () => {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type a message"
           ref={inputRef}
+          autoComplete='off'
         />
         <button type="button" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>😊</button>
         {showEmojiPicker && (
