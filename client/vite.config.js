@@ -24,10 +24,6 @@ export default ({ mode }) => {
           ws: true,  // Enable WebSocket proxying
           changeOrigin: true // Ensure the origin is changed to the target URL
         },
-        '/login': {
-          target: 'https://chat-test-bquw.onrender.com/login' || 'http://localhost:3000/login',
-          changeOrigin: true,
-        }
       }
     },
     build: {
