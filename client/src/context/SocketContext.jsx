@@ -17,6 +17,9 @@ export const SocketProvider = ({ children }) => {
       },
       ackTimeout: 10000,
       retries: 3,
+      reconnection: true,
+      reconnectionDelay: 500,
+      reconnectionDelayMax: 5000,
     });
 
     setSocket(newSocket);

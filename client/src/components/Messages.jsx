@@ -93,16 +93,18 @@ const Messages = () => {
 
   const sendMessage = () => {
     if (socket && input && currentUser) {
+      const userProfilePicture = currentUser.profilePicture || '';
       const message = {
         content: input,
         client_offset: new Date().toISOString(),
         user: { 
           _id: currentUser._id, 
           username: currentUser.username, 
-          profilePicture: currentUser.profilePicture 
+          profilePicture: userProfilePicture
         },
       };
-  
+      console.error('Error sending message:', message);
+      console.log('currentUser:', currentUser);
       socket.emit('chat message', message);
       setInput(''); // clear the input field
     }
