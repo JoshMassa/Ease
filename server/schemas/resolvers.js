@@ -216,7 +216,12 @@ const resolvers = {
         throw new AuthenticationError('Incorrect email or password');
       }
 
-      const token = auth.signToken(user);
+      const token = auth.signToken({
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+        profilePicture: user.profilePicture,
+      });
 
       user.status = 'Online';
       await user.save();

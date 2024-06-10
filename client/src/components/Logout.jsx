@@ -8,7 +8,7 @@ import { LOGOUT, UPDATE_USER_STATUS } from '../utils/mutations';
 import AuthContext from '../context/AuthContext';
 
 const Logout = () => {
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [updateUserStatus] = useMutation(UPDATE_USER_STATUS, {
     context: {
