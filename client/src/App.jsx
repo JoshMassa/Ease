@@ -1,16 +1,31 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { SocketProvider } from './context/SocketContext';
-import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
+import { ApolloProvider, InMemoryCache, ApolloClient, createHttpLink } from '@apollo/client';
 import Header from './components/Header';
+import { setContext } from '@apollo/client/link/context';
+import Auth from './utils/auth';
 import Navigation from './components/Navigation';
 import { Layout, Switch, ConfigProvider, theme } from 'antd';
 import LoggedInIndicator from './components/LoggedInIndicator';
 import { CurrentUserProvider } from './context/CurrentUserContext';
 
+const httpLink = createHttpLink({
+  uri: import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = Auth.getToken();
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     typePolicies: {
       User: {
@@ -24,6 +39,7 @@ const client = new ApolloClient({
       }
     }
   }),
+  credentials: 'include',
 });
 
 const { Sider, Content } = Layout;
