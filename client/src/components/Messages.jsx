@@ -39,16 +39,6 @@ const Messages = () => {
   }, [location]);
 
   useEffect(() => {
-    if (socket) {
-      return () => {
-        socket.off('chat message');
-        socket.off('connect');
-        socket.off('disconnect');
-      };
-    }
-  }, [socket]);
-
-  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 

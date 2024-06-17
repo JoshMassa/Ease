@@ -6,7 +6,7 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import Logout from './Logout';
 
@@ -15,10 +15,17 @@ const { Header: AntHeader } = Layout;
 function Header() {
   console.log('Header component rendered');
   const { user, isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleHomeClick = (e) => {
+    e.preventDefault();
+    navigate('/');
+    window.location.reload();
+  };
 
   const items = [
     {
-      label: <Link to='/'>Home</Link>,
+      label: <a href='/' onClick={handleHomeClick}>Home</a>,
       key: 'homePage',
       icon: <HomeOutlined />,
     },
