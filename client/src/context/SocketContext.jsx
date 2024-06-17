@@ -11,6 +11,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    // Switch the order of localhost/chat-test for production
     const newSocket = io('https://chat-test-bquw.onrender.com' || 'http://localhost:3000', {
       withCredentials: true,
     });

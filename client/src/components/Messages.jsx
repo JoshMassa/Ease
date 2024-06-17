@@ -22,7 +22,7 @@ const Messages = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get('https://chat-test-bquw.onrender.com/messages' || 'http://localhost:3000/messages');
+      const response = await axios.get('https://chat-test-bquw.onrender.com/messages' || 'http://localhost:3000/messages'); // Switch the order of these for production
       if (Array.isArray(response.data)) {
         setMessages(response.data);
         scrollToBottom();
@@ -100,11 +100,18 @@ const Messages = () => {
     if (socket && socket.connected && input && currentUser) {
       const message = {
         content: input,
-        client_offset: new Date().toISOString(),
+        client_offset: new Date().toLocaleString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        }),
         user: { 
           _id: currentUser._id, 
           username: currentUser.username, 
-          profilePicture: currentUser.profilePicture 
+          profilePicture: currentUser.profilePicture,
         },
       };
       console.log('Sending message:', message);
@@ -136,7 +143,7 @@ const Messages = () => {
                 className="message-avatar"
               />
               <div className="message-content">
-                <strong>{message.user ? message.user.username : 'User'}</strong>
+                <div><strong>{message.user ? message.user.username : 'User'}</strong> <span style={{fontSize: '14px'}}>- {message.client_offset}</span></div>
                 <div className="message-text">{message.content}</div>
               </div>
             </li>
