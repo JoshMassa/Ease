@@ -40,24 +40,6 @@ const Messages = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.on('chat message', (msg) => {
-        setMessages((prevMessages) => {
-          const isDuplicate = prevMessages.some((message) => message.messageId === msg.messageId || message._id === msg.messageId);
-          if (!isDuplicate) {
-            return [...prevMessages, msg];
-          }
-          return prevMessages;
-        });
-      });
-
-      socket.on('connect', () => {
-        console.log('Connected to Socket.IO server');
-      });
-
-      socket.on('disconnect', () => {
-        console.log('Disconnected from Socket.IO server');
-      })
-
       return () => {
         socket.off('chat message');
         socket.off('connect');
@@ -117,19 +99,19 @@ const Messages = () => {
       console.log('Sending message:', message);
       console.log('currentUser:', currentUser);
 
+      setMessages((prevMessages) => [...prevMessages, message]);
+
       socket.emit('chat message', message, () => {
           console.log('Message sent successfully');
           setInput(''); // clear the input field
-        }
-      )
-    }
+        });
+      }
   };
 
   const addEmoji = (emoji) => {
     setInput(input + emoji.native);
     setShowEmojiPicker(false); // close the picker after selecting an emoji
   };
-
   return (
     <div id='messagesContainer'>
       <ul id="messages">
