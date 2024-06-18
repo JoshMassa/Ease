@@ -8,6 +8,7 @@ import { Menu } from 'antd';
 import { useQuery } from '@apollo/client';
 import { USERS_BY_STATUS } from '../utils/queries';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Navigation.css';
 
 function Navigation() {
     const [onlineUsers, setOnlineUsers] = useState([]);
